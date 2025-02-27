@@ -1,11 +1,5 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "outputDirectory": "out",
-  "framework": "nextjs",
-  "buildCommand": "next build",
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "framework": "nextjs"
 }
