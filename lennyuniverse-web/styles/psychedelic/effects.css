@@ -1,0 +1,236 @@
+/* Psychedelic Effects CSS */
+
+@keyframes neonPulse {
+  0% { 
+    filter: drop-shadow(0 0 2px rgba(255, 0, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(255, 0, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(255, 0, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.8)) 
+           drop-shadow(0 0 10px rgba(255, 0, 255, 0.5)) 
+           drop-shadow(0 0 15px rgba(255, 0, 255, 0.3));
+  }
+  100% { 
+    filter: drop-shadow(0 0 2px rgba(255, 0, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(255, 0, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(255, 0, 255, 0.3));
+  }
+}
+
+@keyframes neonPurplePulse {
+  0% { 
+    filter: drop-shadow(0 0 2px rgba(157, 0, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(157, 0, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(157, 0, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(157, 0, 255, 0.8)) 
+           drop-shadow(0 0 10px rgba(157, 0, 255, 0.5)) 
+           drop-shadow(0 0 15px rgba(157, 0, 255, 0.3));
+  }
+  100% { 
+    filter: drop-shadow(0 0 2px rgba(157, 0, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(157, 0, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(157, 0, 255, 0.3));
+  }
+}
+
+@keyframes neonTealPulse {
+  0% { 
+    filter: drop-shadow(0 0 2px rgba(0, 255, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.8)) 
+           drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)) 
+           drop-shadow(0 0 15px rgba(0, 255, 255, 0.3));
+  }
+  100% { 
+    filter: drop-shadow(0 0 2px rgba(0, 255, 255, 0.8)) 
+           drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)) 
+           drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
+  }
+}
+
+@keyframes textFlicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px #FF00FF, 0 0 80px #FF00FF, 0 0 90px #FF00FF, 0 0 100px #FF00FF, 0 0 150px #FF00FF;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
+
+@keyframes hueRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes distortion {
+  0% {
+    filter: url('#distortion-0');
+  }
+  25% {
+    filter: url('#distortion-1');
+  }
+  50% {
+    filter: url('#distortion-2');
+  }
+  75% {
+    filter: url('#distortion-3');
+  }
+  100% {
+    filter: url('#distortion-0');
+  }
+}
+
+/* Utility Classes */
+
+.neon-pink-pulse {
+  animation: neonPulse 2s infinite;
+}
+
+.neon-purple-pulse {
+  animation: neonPurplePulse 2s infinite;
+}
+
+.neon-teal-pulse {
+  animation: neonTealPulse 2s infinite;
+}
+
+.text-flicker {
+  animation: textFlicker 2s infinite alternate;
+}
+
+.hue-rotate {
+  animation: hueRotate 10s infinite linear;
+}
+
+.wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.hover-effect {
+  animation: hover 4s ease-in-out infinite;
+}
+
+.pulse-scale {
+  animation: pulseScale 4s ease-in-out infinite;
+}
+
+.text-distortion {
+  animation: distortion 8s ease-in-out infinite;
+}
+
+/* Glass Elements */
+.glass {
+  background: rgba(255, 0, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.glass-purple {
+  background: rgba(157, 0, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(157, 0, 255, 0.3);
+}
+
+.glass-teal {
+  background: rgba(0, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+/* SVG Filters for Text Distortion */
+#svg-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Enhanced Neon Effects */
+.neon-text-enhanced {
+  color: white;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #FF00FF,
+    0 0 20px #FF00FF,
+    0 0 25px #FF00FF,
+    0 0 30px #FF00FF,
+    0 0 35px #FF00FF;
+}
+
+.neon-purple-text-enhanced {
+  color: white;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #9D00FF,
+    0 0 20px #9D00FF,
+    0 0 25px #9D00FF,
+    0 0 30px #9D00FF,
+    0 0 35px #9D00FF;
+}
+
+.neon-teal-text-enhanced {
+  color: white;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #00FFFF,
+    0 0 20px #00FFFF,
+    0 0 25px #00FFFF,
+    0 0 30px #00FFFF,
+    0 0 35px #00FFFF;
+}
+
+/* Neon Border Effects */
+.neon-border-enhanced {
+  box-shadow:
+    0 0 5px #FF00FF,
+    0 0 10px #FF00FF,
+    0 0 15px #FF00FF,
+    inset 0 0 5px #FF00FF,
+    inset 0 0 10px #FF00FF;
+}
+
+.neon-purple-border-enhanced {
+  box-shadow:
+    0 0 5px #9D00FF,
+    0 0 10px #9D00FF,
+    0 0 15px #9D00FF,
+    inset 0 0 5px #9D00FF,
+    inset 0 0 10px #9D00FF;
+}
+
+.neon-teal-border-enhanced {
+  box-shadow:
+    0 0 5px #00FFFF,
+    0 0 10px #00FFFF,
+    0 0 15px #00FFFF,
+    inset 0 0 5px #00FFFF,
+    inset 0 0 10px #00FFFF;
+}
