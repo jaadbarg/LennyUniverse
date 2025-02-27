@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export', // Configure static exports
+  distDir: 'out', // Specify the output directory explicitly
   images: {
     domains: [
       'images.unsplash.com',
@@ -12,6 +13,8 @@ const nextConfig = {
     unoptimized: true, // Required for static export
   },
   swcMinify: true,
+  // Enable trailingSlash for better static hosting compatibility
+  trailingSlash: true,
 }
 
 module.exports = nextConfig
