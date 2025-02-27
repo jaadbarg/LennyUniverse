@@ -31,7 +31,7 @@ import NeonText3D from '../components/psychedelic/NeonText3D';
 import PsychedelicCard from '../components/psychedelic/PsychedelicCard';
 import NeonButton from '../components/psychedelic/NeonButton';
 import PsychedelicBackground from '../components/psychedelic/PsychedelicBackground';
-import StarfieldBackground from '../components/psychedelic/StarfieldBackground';
+import NebulaBackground from '../components/psychedelic/NebulaBackground';
 import SVGFilters from '../components/psychedelic/SVGFilters';
 import { useInView } from 'react-intersection-observer';
 // Import 3D scenes with dynamic loading to avoid SSR issues
@@ -129,13 +129,10 @@ export default function Home() {
           className="absolute inset-0 z-0"
           style={{ y, scale, opacity }}
         >
-          <StarfieldBackground
-            starCount={300}
-            depth={5}
-            speed={0.3}
-            opacity={0.6}
-            colors={['#FFFFFF', '#BBBBFF', '#FFBBFF', '#AADDFF']}
-            interactive={true}
+          <NebulaBackground
+            opacity={0.7}
+            zIndex={-10}
+            animate={true}
           />
         </motion.div>
         

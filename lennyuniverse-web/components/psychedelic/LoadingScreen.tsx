@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import AnimatedLogo from './AnimatedLogo';
+import NebulaBackground from './NebulaBackground';
 
 interface LoadingScreenProps {
   onLoadingComplete?: () => void;
@@ -79,25 +80,10 @@ const LoadingScreen = ({
           animate={controls}
           initial={{ opacity: 1 }}
         >
-          {/* Cosmic background with subtle animation */}
-          <motion.div 
-            className="absolute inset-0 z-0 overflow-hidden"
-            animate={{
-              backgroundPosition: ['0% 0%', '100% 100%'],
-            }}
-            transition={{
-              duration: 20,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-            style={{
-              background: 'radial-gradient(circle at center, rgba(30,0,40,1) 0%, rgba(10,0,20,1) 70%, rgba(0,0,10,1) 100%)',
-              filter: 'brightness(0.7) contrast(1.2)',
-            }}
-          />
-
-          {/* Initial stars twinkling */}
+          {/* Nebula background */}
+          <NebulaBackground opacity={1} zIndex={0} animate={true} />
+          
+          {/* Stars twinkling */}
           {Array.from({ length: 100 }).map((_, i) => {
             const size = Math.random() * 2 + 1;
             const x = Math.random() * 100;
@@ -114,6 +100,7 @@ const LoadingScreen = ({
                   left: `${x}%`,
                   top: `${y}%`,
                   boxShadow: `0 0 ${size * 2}px rgba(255, 255, 255, 0.8)`,
+                  zIndex: 1
                 }}
                 animate={{
                   opacity: [0.2, 0.8, 0.2],

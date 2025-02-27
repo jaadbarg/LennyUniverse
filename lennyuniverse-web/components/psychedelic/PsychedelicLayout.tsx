@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import ParticleBackground from './ParticleBackground';
 import SVGFilters from './SVGFilters';
 import FloatingElements from './FloatingElements';
+import NebulaBackground from './NebulaBackground';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
@@ -12,6 +13,7 @@ interface PsychedelicLayoutProps {
   mouseTrailEnabled?: boolean;
   pageTransitionEnabled?: boolean;
   floatingElementsEnabled?: boolean;
+  nebulaEnabled?: boolean;
 }
 
 const PsychedelicLayout = ({
@@ -20,6 +22,7 @@ const PsychedelicLayout = ({
   mouseTrailEnabled = true,
   pageTransitionEnabled = true,
   floatingElementsEnabled = true,
+  nebulaEnabled = true,
 }: PsychedelicLayoutProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [trailPositions, setTrailPositions] = useState<{ x: number; y: number; id: string }[]>([]);
@@ -93,6 +96,9 @@ const PsychedelicLayout = ({
   return (
     <>
       <SVGFilters />
+      
+      {/* Nebula Background */}
+      {nebulaEnabled && <NebulaBackground opacity={0.8} zIndex={-20} />}
       
       {/* Floating Elements */}
       {floatingElementsEnabled && (
