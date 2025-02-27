@@ -45,9 +45,18 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-## Deployment
+## Deployment Instructions for Vercel
 
-This website is configured to be deployed on Vercel.
+The site is configured to work with Vercel deployment. To deploy:
+
+1. Push your changes to your GitHub repository
+2. Connect the repository to Vercel
+3. In the Vercel project settings:
+   - Set the Framework Preset to `Next.js`
+   - Set the Build Command to `npm run build`
+   - Set the Output Directory to `out`
+   - Ensure Node.js version is set to 18.x or later
+   - Add environment variables from `.env.production`
 
 ## License
 
