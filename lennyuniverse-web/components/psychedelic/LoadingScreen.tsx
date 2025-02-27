@@ -130,7 +130,8 @@ const LoadingScreen = ({
 
           {/* Logo container with glow effect */}
           <motion.div
-            className="relative z-10"
+            className="relative z-10 flex justify-center items-center"
+            style={{ width: '200px', height: '200px' }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{
@@ -148,8 +149,9 @@ const LoadingScreen = ({
                 style={{
                   width: 200 + i * 50,
                   height: 200 + i * 50,
-                  left: -25 - i * 25,
-                  top: -25 - i * 25,
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
                   backgroundColor: 'transparent',
                   border: `1px solid ${i === 0 ? '#FF00FF' : i === 1 ? '#9D00FF' : '#00FFFF'}`,
                   opacity: 0.3 - i * 0.1,
@@ -170,7 +172,8 @@ const LoadingScreen = ({
             <motion.div
               animate={logoControls}
               initial={{ scale: 1 }}
-              className="relative z-20"
+              className="relative z-20 flex justify-center items-center"
+              style={{ width: '100%', height: '100%' }}
             >
               <AnimatedLogo
                 src={logoSrc}
@@ -197,6 +200,7 @@ const LoadingScreen = ({
                   backgroundColor: particle.color,
                   left: '50%',
                   top: '50%',
+                  transform: 'translate(-50%, -50%)',
                   boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}`,
                 }}
                 initial={{ x: 0, y: 0, opacity: 0 }}
