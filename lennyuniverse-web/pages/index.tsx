@@ -108,12 +108,14 @@ export default function Home() {
           }}
         />
         
-        {/* Optimized starfield with fewer stars for better performance */}
-        <StarfieldBackground
-          starCount={90}
-          opacity={1}
-          withNebulas={true}
-        />
+        {/* Optimized starfield with fewer stars for better performance - set higher z-index */}
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
+          <StarfieldBackground
+            starCount={150}
+            opacity={1}
+            withNebulas={true}
+          />
+        </div>
         
         {/* Reduced nebula explosions for better performance */}
         <NebulaExplosion 
@@ -283,10 +285,10 @@ export default function Home() {
       {/* Community Section */}
       <section className="py-24 relative overflow-hidden">
         {/* Add stars to background */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
           <StarfieldBackground
-            starCount={70}
-            opacity={0.6}
+            starCount={120}
+            opacity={0.8}
             withNebulas={true}
           />
         </div>
@@ -451,10 +453,10 @@ export default function Home() {
       {/* Meet Lenny Section */}
       <section className="py-24 relative overflow-hidden" ref={meetLennyRef}>
         {/* Add stars to background */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
           <StarfieldBackground
-            starCount={70}
-            opacity={0.6}
+            starCount={120}
+            opacity={0.8}
             withNebulas={true}
           />
         </div>
@@ -575,10 +577,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-deepSpace/40 to-deepSpace/90 z-0" />
         
         {/* Static starfield background */}
-        <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute inset-0" style={{ zIndex: 1, opacity: 0.7 }}>
           <StarfieldBackground
-            starCount={100}
-            opacity={0.7}
+            starCount={120}
+            opacity={0.9}
             withNebulas={true}
           />
         </div>

@@ -97,7 +97,7 @@ const StarfieldBackground = memo(({
       }} />
       
       {/* Simple static stars for guaranteed rendering - increased brightness and size */}
-      <div className="absolute inset-0" style={{ zIndex: 1 }}>
+      <div className="absolute inset-0" style={{ zIndex: 2 }}>
         {stars.map((star, i) => (
           <div
             key={i}
@@ -105,12 +105,12 @@ const StarfieldBackground = memo(({
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
-              width: `${star.size + 1}px`, /* Increased size */
-              height: `${star.size + 1}px`, /* Increased size */
+              width: `${star.size + 2}px`, /* Further increased size */
+              height: `${star.size + 2}px`, /* Further increased size */
               backgroundColor: "#FFFFFF",
-              boxShadow: `0 0 ${star.size * 2}px ${star.color}`,
+              boxShadow: `0 0 ${star.size * 3}px ${star.color}`,
               filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
-              opacity: 0.95, /* Increased opacity */
+              opacity: 1, /* Maximum opacity */
               animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`,
             }}
           />
