@@ -15,31 +15,30 @@ const StarfieldBackground = memo(({
   className = '',
   withNebulas = false
 }: StarfieldBackgroundProps) => {
-  // Reduced number of stars for better performance but maintain visual appearance
-  const stars = Array.from({ length: Math.min(starCount, 120) }).map((_, i) => {
+  // Increased number of stars for better visibility
+  const stars = Array.from({ length: Math.min(starCount * 2, 200) }).map((_, i) => {
     // Static positioning
     const x = Math.random() * 100;
     const y = Math.random() * 100;
     
-    // Simplified visual properties with fewer variations
+    // Improved visual properties with brighter appearance
     const sizeFactor = Math.random();
-    // Limit star sizes for performance - fewer pixels to render
-    const size = sizeFactor < 0.8 ? (1 + Math.random() * 1.5) : (2 + Math.random() * 2); 
+    // Slightly larger stars for better visibility
+    const size = sizeFactor < 0.6 ? (1.5 + Math.random() * 2) : (3 + Math.random() * 3); 
     
-    // Very selective blur for performance - blur is expensive
-    const blurAmount = sizeFactor > 0.85 ? `${1 + Math.random() * 2}px` : '0';
+    // Selective blur for glow effect
+    const blurAmount = sizeFactor > 0.7 ? `${1 + Math.random() * 2}px` : '0';
     
-    // Animation properties - reduced animation complexity
-    // Fixed durations for grouped stars to reduce unique animation calculations
-    const groupIndex = Math.floor(i / 20); // Group stars to share timings
+    // Animation properties - varied more for realistic twinkling
+    const groupIndex = Math.floor(i / 20);
     const delay = (groupIndex * 0.8 + Math.random() * 1.5) % 5;
-    const duration = 2 + (i % 3) * 1.2; // Only 3 different durations
+    const duration = 2 + (i % 5) * 1.2; // More varied durations
     
-    // Enhanced color palette with refined psychedelic theme
+    // Enhanced color palette with brighter values
     const colorIndex = Math.floor(Math.random() * 5);
     const colorPalette = [
+      '#FFFFFF', // Pure white (brightest)
       '#F2EAFF', // Purplish white (starWhite)
-      '#F2EAFF', // Repeat for more common
       '#E9D6FF', // Light purple tint
       '#D1F2FF', // Light teal tint
       '#FFF8D6', // Light gold tint
@@ -88,7 +87,7 @@ const StarfieldBackground = memo(({
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       style={{ 
         opacity, 
-        zIndex: -1, 
+        zIndex: 0, 
         background: 'radial-gradient(ellipse at center, rgba(10,0,30,1) 0%, rgba(0,0,10,1) 100%)' 
       }}
     >
@@ -97,50 +96,53 @@ const StarfieldBackground = memo(({
         background: 'radial-gradient(circle at 30% 20%, rgba(50,0,60,0.15) 0%, transparent 40%),radial-gradient(circle at 70% 60%, rgba(157,0,255,0.1) 0%, transparent 30%)' 
       }} />
       
-      {/* Simple static stars for guaranteed rendering */}
-      <div className="absolute inset-0">
+      {/* Simple static stars for guaranteed rendering - increased brightness and size */}
+      <div className="absolute inset-0" style={{ zIndex: 1 }}>
         {stars.map((star, i) => (
           <div
             key={i}
-            className="absolute rounded-full twinkle-star"
+            className="absolute rounded-full"
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              backgroundColor: star.color,
-              boxShadow: star.size > 2 ? `0 0 ${star.size}px ${star.color}` : 'none',
+              width: `${star.size + 1}px`, /* Increased size */
+              height: `${star.size + 1}px`, /* Increased size */
+              backgroundColor: "#FFFFFF",
+              boxShadow: `0 0 ${star.size * 2}px ${star.color}`,
               filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
-              opacity: 0.9,
+              opacity: 0.95, /* Increased opacity */
               animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`,
             }}
           />
         ))}
       </div>
       
-      {/* Enhanced nebula effects */}
-      {withNebulas && nebulas.map((nebula, i) => (
-        <div
-          key={`nebula-${i}`}
-          className="absolute rounded-full nebula-pulse"
-          style={{
-            left: `${nebula.x}%`,
-            top: `${nebula.y}%`,
-            width: `${nebula.size}vw`,
-            height: `${nebula.size}vw`,
-            background: `radial-gradient(circle, 
-              ${nebula.main} 10%, 
-              ${nebula.glow} 40%, 
-              ${nebula.outer} 65%, 
-              transparent 80%)`,
-            animationDelay: `${nebula.animationDelay}s`,
-            animationDuration: `${nebula.animationDuration}s`,
-            opacity: 0.9,
-            mixBlendMode: 'screen',
-            filter: 'blur(5px)',
-          }}
-        />
-      ))}
+      {/* Enhanced nebula effects - increased brightness and z-index */}
+      <div style={{ zIndex: 0, position: 'relative' }}>
+        {withNebulas && nebulas.map((nebula, i) => (
+          <div
+            key={`nebula-${i}`}
+            className="absolute rounded-full nebula-pulse"
+            style={{
+              left: `${nebula.x}%`,
+              top: `${nebula.y}%`,
+              width: `${nebula.size}vw`,
+              height: `${nebula.size}vw`,
+              background: `radial-gradient(circle, 
+                ${nebula.main.replace(',0.12)', ',0.25)')} 10%, 
+                ${nebula.glow.replace(',0.06)', ',0.15)')} 40%, 
+                ${nebula.outer.replace(',0.02)', ',0.08)')} 65%, 
+                transparent 80%)`,
+              animationDelay: `${nebula.animationDelay}s`,
+              animationDuration: `${nebula.animationDuration}s`,
+              opacity: 0.95,
+              mixBlendMode: 'screen',
+              filter: 'blur(5px)',
+              boxShadow: `0 0 30px ${nebula.main.replace(',0.12)', ',0.15)')}`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 });

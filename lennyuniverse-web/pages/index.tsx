@@ -99,12 +99,12 @@ export default function Home() {
       
       {/* New Space-Themed Hero Section With Twinkling Stars */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
-        {/* Deep space background - static gradient for performance */}
+        {/* Deep space background - static gradient for performance - moved to lower z-index */}
         <div 
           className="absolute inset-0 overflow-hidden"
           style={{ 
             background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
-            zIndex: -10
+            zIndex: -20
           }}
         />
         
