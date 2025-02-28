@@ -309,8 +309,17 @@ export default function Home() {
       
       {/* Community Section */}
       <section className="py-24 relative overflow-hidden">
+        {/* Add Starfield Background to the Community section - specified position */}
+        <div className="absolute inset-0 overflow-hidden">
+          <StarfieldBackground
+            starCount={60}
+            opacity={0.8}
+            withNebulas={true}
+          />
+        </div>
+        
         <PsychedelicBackground variant="grid" intensity={0.7} primaryColor="#9D00FF">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -496,6 +505,15 @@ export default function Home() {
       
       {/* Meet Lenny Section */}
       <section className="py-24 relative overflow-hidden" ref={meetLennyRef}>
+        {/* Add Starfield Background to the Meet Lenny section - specified position */}
+        <div className="absolute inset-0 overflow-hidden">
+          <StarfieldBackground
+            starCount={70}
+            opacity={0.8}
+            withNebulas={true}
+          />
+        </div>
+        
         <PsychedelicBackground variant="waves" intensity={0.8} primaryColor="#FF00FF" secondaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -537,40 +555,21 @@ export default function Home() {
                     }}
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <motion.h3
-                      className="text-6xl font-bold text-white mb-4"
-                      animate={{
-                        textShadow: [
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #FF00FF, 0 0 24px #FF00FF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #9D00FF, 0 0 24px #9D00FF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #00FFFF, 0 0 24px #00FFFF",
-                        ]
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "linear"
-                      }}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1 }}
+                      className="w-full h-full flex items-center justify-center"
                     >
-                      LENNY
-                    </motion.h3>
-                    <motion.span
-                      className="text-2xl text-white neon-text-enhanced"
-                      animate={{
-                        textShadow: [
-                          "0 0 5px #fff, 0 0 8px #fff, 0 0 10px #FF00FF",
-                          "0 0 5px #fff, 0 0 8px #fff, 0 0 10px #9D00FF",
-                          "0 0 5px #fff, 0 0 8px #fff, 0 0 10px #00FFFF",
-                        ]
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "linear"
-                      }}
-                    >
-                      UNIVERSE
-                    </motion.span>
+                      <img 
+                        src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/My-Story.png?fit=750%2C347&ssl=1"
+                        alt="My Story - Lenny Universe"
+                        className="max-w-full max-h-full object-contain"
+                        style={{
+                          filter: "drop-shadow(0 0 15px rgba(255,0,255,0.8))",
+                        }}
+                      />
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -638,7 +637,16 @@ export default function Home() {
       
       {/* CTA Section */}
       <section className="py-24 relative" ref={ctaRef}>
-        <div className="absolute inset-0 bg-gradient-to-b from-deepSpace/40 to-deepSpace/90 z-0" />
+        {/* Add Starfield Background to the CTA section - specified position */}
+        <div className="absolute inset-0 overflow-hidden">
+          <StarfieldBackground
+            starCount={50}
+            opacity={0.7}
+            withNebulas={false}
+          />
+        </div>
+        
+        <div className="absolute inset-0 bg-gradient-to-b from-deepSpace/20 to-deepSpace/50 z-1" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div

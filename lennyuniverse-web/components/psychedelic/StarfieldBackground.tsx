@@ -91,7 +91,7 @@ const StarfieldBackground = memo(({
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       style={{ 
         opacity, 
-        zIndex: 0, 
+        zIndex: 0, // Reset to default z-index
         background: 'radial-gradient(ellipse at center, rgba(10,0,30,1) 0%, rgba(0,0,10,1) 100%)' 
       }}
     >
@@ -122,7 +122,7 @@ const StarfieldBackground = memo(({
       </div>
       
       {/* Enhanced nebula effects - increased brightness and z-index */}
-      <div style={{ zIndex: 0, position: 'relative' }}>
+      <div style={{ zIndex: 1, position: 'relative' }}>
         {withNebulas && nebulas.map((nebula, i) => (
           <div
             key={`nebula-${i}`}
