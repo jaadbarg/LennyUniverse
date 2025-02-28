@@ -27,17 +27,16 @@ const Image = memo(({ src, alt, width, height, className, style, fill, priority 
 Image.displayName = 'MemoizedImage';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import NeonText3D from '../components/psychedelic/NeonText3D';
 import PsychedelicCard from '../components/psychedelic/PsychedelicCard';
 import NeonButton from '../components/psychedelic/NeonButton';
 import PsychedelicBackground from '../components/psychedelic/PsychedelicBackground';
 import NebulaBackground from '../components/psychedelic/NebulaBackground';
 import SVGFilters from '../components/psychedelic/SVGFilters';
+import StarfieldBackground from '../components/psychedelic/StarfieldBackground';
+import SpaceText from '../components/psychedelic/SpaceText';
+import NebulaExplosion from '../components/psychedelic/NebulaExplosion';
+import ClickEffects from '../components/psychedelic/ClickEffects';
 import { useInView } from 'react-intersection-observer';
-// Import 3D scenes with dynamic loading to avoid SSR issues
-import dynamic from 'next/dynamic';
-const Scene3D = dynamic(() => import('../components/psychedelic/Scene3D'), { ssr: false });
-const HypercubeScene = dynamic(() => import('../components/psychedelic/HypercubeScene'), { ssr: false });
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -90,224 +89,163 @@ export default function Home() {
     <div className="relative">
       <SVGFilters />
       
-      {/* Hero Section with 3D text */}
+      {/* Mathematical psychedelic click effects */}
+      <ClickEffects 
+        enabled={true}
+        maxEffects={3}
+        effectDuration={2000}
+        colors={['#FF00FF', '#9D00FF', '#00FFFF', '#FF40FF']}
+      />
+      
+      {/* New Space-Themed Hero Section With Twinkling Stars */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
+        {/* Deep space background - static gradient for performance */}
         <div 
-          className="absolute inset-0 overflow-hidden audio-reactive"
+          className="absolute inset-0 overflow-hidden"
           style={{ 
-            background: 'linear-gradient(135deg, rgba(10,10,10,1) 0%, rgba(20,0,20,1) 100%)',
-            opacity: 0.8,
-            zIndex: -2
+            background: 'linear-gradient(135deg, rgba(5,0,15,1) 0%, rgba(15,0,30,1) 100%)',
+            zIndex: -10
           }}
         />
         
-        {/* Static gradient instead of dynamic mouse-following particles */}
-        <div 
-          className="absolute inset-0 z-0"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(255, 0, 255, 0.15), transparent 50%)',
-          }}
+        {/* Starfield background - pure CSS animations */}
+        <StarfieldBackground
+          starCount={150}
+          opacity={1}
+          withNebulas={true}
         />
         
-        {/* Floating 4D hypercubes background - optimized */}
-        <div className="absolute inset-0 z-0 opacity-60">
-          <HypercubeScene 
-            count={3} 
-            colors={['#FF00FF', '#9D00FF', '#00FFFF']} 
-            spread={10}
-            speed={0.1}
-            intensity={0.8}
-          />
-        </div>
+        {/* Occasional distant nebula explosions */}
+        <NebulaExplosion 
+          count={2}
+          interval={10000}
+          maxActive={1}
+          zIndex={-5}
+        />
         
-        {/* 3D floating orbs background - optimized */}
-        <div className="absolute inset-0 z-0">
-          <Scene3D count={3} />
-        </div>
-        
-        <motion.div 
-          className="absolute inset-0 z-0"
-          style={{ y, scale, opacity }}
-        >
-          <NebulaBackground
-            opacity={0.7}
-            zIndex={-10}
-            animate={true}
-          />
-        </motion.div>
-        
+        {/* Content container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left column - Journey text */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               className="relative z-10"
             >
-              {/* BEEFED UP Title Section with Enhanced Effects */}
-              <div className="relative z-30">
-                <div className="text-5xl md:text-7xl font-bold mb-10 text-white relative">
-                  {/* Psychedelic glow effect behind text */}
-                  <div className="absolute inset-0 blur-3xl rounded-full bg-gradient-radial from-purple-600/30 via-pink-500/20 to-transparent z-0 animate-pulse-slow"></div>
+              {/* Simple cosmic title */}
+              <div className="relative mb-10">
+                {/* Ambient glow behind text */}
+                <div className="absolute -inset-5 bg-gradient-radial from-purple-600/20 via-pink-500/10 to-transparent rounded-full blur-xl"></div>
+                
+                {/* Main heading - Your journey of */}
+                <h1 className="text-4xl md:text-6xl font-bold text-center md:text-left mb-6 font-display">
+                  <SpaceText 
+                    text="Your journey of" 
+                    size="3xl"
+                    variant="cosmic"
+                    glowColor="#9D00FF"
+                  />
+                </h1>
+                
+                {/* Featured text - blissful growth */}
+                <div className="relative py-8 mb-8 backdrop-blur-sm">
+                  {/* Simple background with gradient border */}
+                  <div className="absolute inset-0 bg-black/30 border border-purple-500/20 rounded-xl"></div>
                   
-                  {/* Main Title with Enhanced Neon Effect */}
-                  <h1 className="block mb-4 neon-text-enhanced text-center md:text-left relative z-10">
-                    Your journey of
-                  </h1>
-                  
-                  {/* Enhanced Container for Blissful Growth with Backdrop */}
-                  <div className="relative flex flex-col items-center justify-center w-full mt-4 mb-6">
-                    {/* Enhanced multi-layered background for depth */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-800/30 via-pink-700/20 to-fuchsia-800/30 rounded-xl blur-xl transform scale-105 z-0"></div>
-                    <div className="absolute inset-0 bg-black/40 rounded-xl backdrop-blur-sm z-1"></div>
-                    
-                    {/* Subtle animated glow border */}
-                    <div className="absolute inset-0 rounded-xl z-2 animate-pulse-slow">
-                      <div className="absolute inset-0 rounded-xl border border-purple-500/30 blur-sm"></div>
-                    </div>
-                    
-                    {/* New optimized 3D Text with better performance and aesthetics */}
-                    <NeonText3D 
+                  {/* Static glowing text */}
+                  <div className="flex justify-center items-center">
+                    <SpaceText 
                       text="blissful growth" 
-                      className="h-36 md:h-52 w-full mb-4 z-20 blissful-text"
-                      color="#FF00FF" 
-                      floatIntensity={0.8}
-                      speed={0.7}
-                      size={1.5}
+                      size="4xl"
+                      glowColor="#FF00FF"
+                      className="font-audiowide tracking-widest uppercase"
+                      animated={true}
                     />
-                    
-                    {/* Refined Light Rays Effect with better performance */}
-                    <div className="absolute w-full h-full z-5 overflow-hidden opacity-50">
-                      <div className="absolute top-1/2 left-1/2 w-[120%] h-[120%] -translate-x-1/2 -translate-y-1/2 ray-rotate" style={{ animationDuration: '25s' }}>
-                        <div className="w-full h-full bg-[conic-gradient(from_0deg,transparent,#FF00FF30_5deg,transparent_10deg,transparent_30deg,#9D00FF30_35deg,transparent_40deg)]"></div>
-                      </div>
-                    </div>
                   </div>
                 </div>
-              
-                {/* Enhanced Paragraph with Gradient Border */}
-                <motion.div 
-                  className="relative z-20 p-6 rounded-xl backdrop-blur-sm border border-purple-500/30 bg-black/30"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 1 }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-pink-900/5 rounded-xl z-0"></div>
-                  <p className="text-xl md:text-3xl font-medium text-white/90 text-center md:text-left relative z-10">
-                    Discover your path to personal growth and creative expansion. 
-                    <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">
-                      Join our mindful community where imagination and awareness blend to reveal your true potential.
-                    </span>
-                  </p>
-                </motion.div>
               </div>
-              <motion.div
+              
+              {/* Description with simple glass effect */}
+              <motion.div 
+                className="relative p-6 rounded-xl backdrop-blur-sm bg-black/30 border border-purple-500/30"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="mt-8 relative z-20"
+                transition={{ delay: 0.4, duration: 0.8 }}
               >
-                {/* Glowing aura around button */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-pink-600/30 via-purple-600/20 to-blue-600/30 rounded-full blur-xl animate-pulse-slow"></div>
-                
-                {/* Enhanced button with additional effects */}
-                <div className="relative">
+                <p className="text-lg md:text-xl font-medium text-white/90 text-center md:text-left">
+                  Discover your path to personal growth and creative expansion.
+                  <span className="block mt-3 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400">
+                    Join our mindful community where imagination and awareness blend to reveal your true potential.
+                  </span>
+                </p>
+              </motion.div>
+              
+              {/* Call to action button */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="mt-8 text-center md:text-left"
+              >
+                <div className="relative inline-block">
+                  {/* Simple glow effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-600/40 to-purple-600/40 rounded-full blur-md"></div>
+                  
                   <NeonButton 
                     href="/contact" 
                     color="pink"
                     size="lg"
                     variant="flux"
-                    className="relative z-10 px-12 py-5 text-xl font-bold tracking-wider shadow-lg"
+                    className="relative px-12 py-4 text-xl font-bold"
                   >
                     <span className="relative inline-flex items-center">
-                      <span className="mr-2">✨</span>
+                      <span className="mr-2">✦</span>
                       Join Our Community
-                      <span className="ml-2 animate-pulse">✨</span>
                     </span>
                   </NeonButton>
-                  
-                  {/* Subtle animated border */}
-                  <div className="absolute -inset-[3px] rounded-xl border border-purple-500/50 z-0 animate-pulse-slow"></div>
                 </div>
               </motion.div>
             </motion.div>
             
+            {/* Right column - LENNY logo */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              transition={{ duration: 1, delay: 0.3 }}
               className="relative hidden lg:block"
             >
-              <motion.div
-                animate={{
-                  y: [0, -20, 0],
-                  rotate: [0, 5, 0, -5, 0],
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut"
-                }}
-                className="relative z-20"
-              >
-                <div className="rounded-xl overflow-hidden max-w-sm mx-auto relative">
-                  <motion.div
-                    className="w-96 h-96 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-800 rounded-xl"
-                    animate={{
-                      background: [
-                        "linear-gradient(45deg, rgba(157, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0.8) 50%, rgba(0, 255, 255, 0.8) 100%)",
-                        "linear-gradient(135deg, rgba(157, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0.8) 50%, rgba(0, 255, 255, 0.8) 100%)",
-                        "linear-gradient(225deg, rgba(157, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0.8) 50%, rgba(0, 255, 255, 0.8) 100%)",
-                        "linear-gradient(315deg, rgba(157, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0.8) 50%, rgba(0, 255, 255, 0.8) 100%)",
-                        "linear-gradient(45deg, rgba(157, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0.8) 50%, rgba(0, 255, 255, 0.8) 100%)",
-                      ],
-                    }}
-                    transition={{
-                      duration: 15,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  />
-                  <motion.div 
-                    className="absolute inset-0 rounded-xl"
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px 5px rgba(255, 0, 255, 0.5), inset 0 0 10px 5px rgba(255, 0, 255, 0.3)",
-                        "0 0 30px 10px rgba(255, 0, 255, 0.6), inset 0 0 15px 5px rgba(255, 0, 255, 0.4)",
-                        "0 0 20px 5px rgba(255, 0, 255, 0.5), inset 0 0 10px 5px rgba(255, 0, 255, 0.3)",
-                      ]
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.h3
-                      className="text-4xl md:text-6xl font-bold text-white"
-                      animate={{
-                        textShadow: [
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #FF00FF, 0 0 24px #FF00FF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #9D00FF, 0 0 24px #9D00FF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #00FFFF, 0 0 24px #00FFFF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #9D00FF, 0 0 24px #9D00FF",
-                          "0 0 8px #fff, 0 0 12px #fff, 0 0 16px #FF00FF, 0 0 24px #FF00FF",
-                        ]
-                      }}
-                      transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "linear"
-                      }}
-                    >
-                      LENNY
-                    </motion.h3>
+              <div className="rounded-full overflow-hidden max-w-sm mx-auto relative p-2">
+                {/* Static logo container with subtle animation */}
+                <div className="relative h-80 w-80 mx-auto rounded-full bg-gradient-to-b from-black to-purple-900/30 border border-purple-500/30 backdrop-blur-sm p-4">
+                  {/* Ambient glow */}
+                  <div className="absolute inset-0 rounded-full blur-xl bg-gradient-radial from-pink-600/20 via-purple-500/10 to-transparent"></div>
+                  
+                  {/* Logo display */}
+                  <div className="relative h-full w-full flex items-center justify-center">
+                    {/* Logo with white background and simple shine effect */}
+                    <div className="logo-shine rounded-full p-2 bg-white/90">
+                      <img 
+                        src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png?fit=1080%2C901&ssl=1"
+                        alt="Lenny Universe Logo"
+                        width={220}
+                        height={220}
+                        className="relative z-10"
+                      />
+                    </div>
+                    
+                    {/* Static cosmic text below logo */}
+                    <div className="absolute -bottom-2 left-0 right-0 text-center">
+                      <SpaceText 
+                        text="LENNY" 
+                        size="2xl"
+                        glowColor="#FF00FF"
+                        animated={false}
+                      />
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-              <div className="absolute -inset-10 bg-neonPurple rounded-full opacity-5 blur-3xl -z-10" />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -591,17 +529,12 @@ export default function Home() {
       <section className="py-24 relative" ref={ctaRef}>
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90 z-0" />
         
-        {/* Add hypercubes to CTA background with optimized settings */}
+        {/* Static starfield background */}
         <div className="absolute inset-0 z-0 opacity-40">
-          <HypercubeScene 
-            count={2} 
-            colors={['#FF00FF', '#00FFFF', '#9D00FF']} 
-            spread={15}
-            speed={0.1}
-            minSize={1.5}
-            maxSize={2}
-            intensity={0.5}
-            interactive={false}
+          <StarfieldBackground
+            starCount={100}
+            opacity={0.7}
+            withNebulas={true}
           />
         </div>
         

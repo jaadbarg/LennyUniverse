@@ -161,7 +161,7 @@ const NeonText3D = ({
       fontSize,
       fontWeight: 'bold',
       letterSpacing: '0.05em',
-      textTransform: 'lowercase', // Stylistic choice for "blissful growth"
+      textTransform: 'lowercase' as const, // Stylistic choice for "blissful growth"
       fontFamily: "'Audiowide', 'Orbitron', sans-serif" // Fallback to system fonts
     };
   };

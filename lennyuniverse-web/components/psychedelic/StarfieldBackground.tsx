@@ -1,169 +1,114 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 interface StarfieldBackgroundProps {
   starCount?: number;
-  depth?: number;
-  speed?: number;
   opacity?: number;
   className?: string;
-  colors?: string[];
-  interactive?: boolean;
+  withNebulas?: boolean;
 }
 
-const StarfieldBackground = ({
-  starCount = 200,
-  depth = 3,
-  speed = 0.5,
+// Ultra-lightweight starfield implementation using CSS only
+// No state, no animations handled by JS, pure CSS for performance
+const StarfieldBackground = memo(({
+  starCount = 100,
   opacity = 0.8,
   className = '',
-  colors = ['#FFFFFF', '#FFEEDD', '#EEDDFF'],
-  interactive = true
+  withNebulas = false
 }: StarfieldBackgroundProps) => {
-  const [stars, setStars] = useState<Array<{
-    id: number;
-    x: number;
-    y: number;
-    size: number;
-    depth: number;
-    opacity: number;
-    color: string;
-    twinkleSpeed: number;
-  }>>([]);
+  // Precompute all stars at render time
+  const stars = Array.from({ length: Math.min(starCount, 150) }).map((_, i) => {
+    // Static positioning
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    
+    // Visual properties
+    const size = 1 + Math.random() * 2;
+    const blurAmount = Math.random() > 0.8 ? `${1 + Math.random() * 2}px` : '0';
+    
+    // Animation properties - each star gets a unique but fixed animation delay
+    const delay = Math.random() * 5;
+    const duration = 2 + Math.random() * 3;
+    
+    // Color - most stars are white, some have subtle tint
+    const colorIndex = Math.random();
+    let color;
+    if (colorIndex > 0.9) color = '#FFDDFF'; // Slight pink
+    else if (colorIndex > 0.8) color = '#DDDDFF'; // Slight blue
+    else color = '#FFFFFF'; // White
+    
+    return { x, y, size, color, delay, duration, blurAmount };
+  });
   
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [mounted, setMounted] = useState(false);
-  
-  // Initialize stars
-  useEffect(() => {
-    setMounted(true);
+  // Create a few static nebulas if requested
+  const nebulas = withNebulas ? Array.from({ length: 3 }).map((_, i) => {
+    const x = 15 + Math.random() * 70; // Keep away from edges
+    const y = 15 + Math.random() * 70;
+    const size = 30 + Math.random() * 30; // Large nebulas
     
-    // Get dimensions from container or use window size as fallback
-    const width = containerRef.current?.clientWidth || window.innerWidth;
-    const height = containerRef.current?.clientHeight || window.innerHeight;
-    setDimensions({ width, height });
+    // Choose nebula color
+    const colorSchemes = [
+      { main: 'rgba(255,0,255,0.03)', glow: 'rgba(255,0,255,0.02)' }, // Pink
+      { main: 'rgba(157,0,255,0.03)', glow: 'rgba(157,0,255,0.02)' }, // Purple
+      { main: 'rgba(0,255,255,0.03)', glow: 'rgba(0,255,255,0.02)' }, // Teal
+    ];
+    const colorScheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
     
-    // Create stars
-    const newStars = Array.from({ length: starCount }).map((_, i) => {
-      const starDepth = Math.random() * depth;
-      const twinkleSpeed = 0.5 + Math.random() * 2;
-      
-      return {
-        id: i,
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: 1 + Math.random() * 2 * (1 - starDepth / depth), // Larger stars in front
-        depth: starDepth,
-        opacity: 0.2 + Math.random() * 0.8,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        twinkleSpeed,
-      };
-    });
-    
-    setStars(newStars);
-    
-    // Update dimensions on resize
-    const handleResize = () => {
-      const newWidth = containerRef.current?.clientWidth || window.innerWidth;
-      const newHeight = containerRef.current?.clientHeight || window.innerHeight;
-      setDimensions({ width: newWidth, height: newHeight });
-      
-      // Reposition stars within new dimensions
-      setStars(prevStars =>
-        prevStars.map(star => ({
-          ...star,
-          x: (star.x / dimensions.width) * newWidth,
-          y: (star.y / dimensions.height) * newHeight,
-        }))
-      );
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [starCount, depth, colors]);
-  
-  // Handle mouse movement for interactive parallax effect
-  useEffect(() => {
-    if (!interactive || !mounted) return;
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      setMousePosition({ x, y });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [interactive, mounted]);
-  
-  // Don't render anything on SSR
-  if (!mounted) return null;
+    return { x, y, size, ...colorScheme };
+  }) : [];
   
   return (
-    <motion.div
-      ref={containerRef}
-      className={`absolute inset-0 overflow-hidden ${className}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity }}
-      transition={{ duration: 1 }}
-      style={{ zIndex: -1 }}
+    <div
+      className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+      style={{ 
+        opacity, 
+        zIndex: -1, 
+        background: 'radial-gradient(ellipse at center, rgba(10,0,30,1) 0%, rgba(0,0,10,1) 100%)' 
+      }}
     >
-      {stars.map((star) => {
-        // Calculate parallax effect based on mouse position and star depth
-        const moveFactorX = interactive ? ((mousePosition.x / dimensions.width) - 0.5) * star.depth * 20 * speed : 0;
-        const moveFactorY = interactive ? ((mousePosition.y / dimensions.height) - 0.5) * star.depth * 20 * speed : 0;
-        
-        return (
-          <motion.div
-            key={star.id}
-            className="absolute rounded-full"
-            style={{
-              left: star.x,
-              top: star.y,
-              width: star.size,
-              height: star.size,
-              backgroundColor: star.color,
-              boxShadow: `0 0 ${star.size * 2}px ${star.color}`,
-            }}
-            animate={{
-              x: moveFactorX,
-              y: moveFactorY,
-              opacity: [
-                star.opacity,
-                star.opacity * 0.5,
-                star.opacity
-              ],
-            }}
-            transition={{
-              x: { duration: 0.2, ease: "linear" },
-              y: { duration: 0.2, ease: "linear" },
-              opacity: {
-                duration: star.twinkleSpeed,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut"
-              }
-            }}
-          />
-        );
-      })}
+      {/* Background gradients */}
+      <div className="absolute inset-0" style={{ 
+        background: 'radial-gradient(circle at 30% 20%, rgba(50,0,60,0.15) 0%, transparent 40%),radial-gradient(circle at 70% 60%, rgba(157,0,255,0.1) 0%, transparent 30%)' 
+      }} />
       
-      {/* Add subtle glow/fog effect */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(25,0,50,0.05) 0%, rgba(10,0,20,0.15) 70%, rgba(5,0,10,0.3) 100%)',
-          mixBlendMode: 'screen'
-        }}
-      />
-    </motion.div>
+      {/* Render static stars with CSS animations */}
+      {stars.map((star, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full twinkle-star"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            backgroundColor: star.color,
+            boxShadow: `0 0 ${star.size + 1}px ${star.color}`,
+            filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
+            opacity: 0.7,
+            animationDelay: `${star.delay}s`,
+            animationDuration: `${star.duration}s`
+          }}
+        />
+      ))}
+      
+      {/* Optional static nebulas */}
+      {withNebulas && nebulas.map((nebula, i) => (
+        <div
+          key={`nebula-${i}`}
+          className="absolute rounded-full nebula-pulse"
+          style={{
+            left: `${nebula.x}%`,
+            top: `${nebula.y}%`,
+            width: `${nebula.size}vw`,
+            height: `${nebula.size}vw`,
+            background: `radial-gradient(circle, ${nebula.main} 0%, ${nebula.glow} 50%, transparent 70%)`,
+            animationDelay: `${i * 3}s`
+          }}
+        />
+      ))}
+    </div>
   );
-};
+});
+
+StarfieldBackground.displayName = 'StarfieldBackground';
 
 export default StarfieldBackground;
