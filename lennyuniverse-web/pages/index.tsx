@@ -281,7 +281,15 @@ export default function Home() {
       </section>
       
       {/* Community Section */}
-      <section className="py-24 relative">
+      <section className="py-24 relative overflow-hidden">
+        {/* Add stars to background */}
+        <div className="absolute inset-0 z-0">
+          <StarfieldBackground
+            starCount={70}
+            opacity={0.6}
+            withNebulas={true}
+          />
+        </div>
         <PsychedelicBackground variant="grid" intensity={0.7} primaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <motion.div 
@@ -441,7 +449,15 @@ export default function Home() {
       </section>
       
       {/* Meet Lenny Section */}
-      <section className="py-24 relative" ref={meetLennyRef}>
+      <section className="py-24 relative overflow-hidden" ref={meetLennyRef}>
+        {/* Add stars to background */}
+        <div className="absolute inset-0 z-0">
+          <StarfieldBackground
+            starCount={70}
+            opacity={0.6}
+            withNebulas={true}
+          />
+        </div>
         <PsychedelicBackground variant="waves" intensity={0.8} primaryColor="#FF00FF" secondaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
