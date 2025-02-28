@@ -40,37 +40,12 @@ import { useInView } from 'react-intersection-observer';
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
   
   const y = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  
-  // Star swirl effect on scroll
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY;
-      
-      // Calculate x offset based on scroll direction and speed
-      // Slower x movement makes the stars feel more natural
-      const xOffset = scrollDelta * 0.05;
-      
-      // Update offsets for the stars to react to
-      setScrollOffset(prev => ({
-        x: prev.x + xOffset,
-        y: currentScrollY * 0.03 // Gentle vertical offset
-      }));
-      
-      lastScrollY = currentScrollY;
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   // Setup intersection observer hooks for animations
   const [featureRef1, featureInView1] = useInView({
@@ -122,24 +97,23 @@ export default function Home() {
         colors={['#E233FF', '#8B31FF', '#00D1D1', '#3F7DFF', '#5C14E8', '#9345FF']}
       />
       
-      {/* Global background that covers the entire page */}
-      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -50 }}>
-        <div className="absolute inset-0" style={{ 
-          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)'
-        }}/>
-      </div>
-      
-      {/* Fixed starfield background */}
-      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -30 }}>
+      {/* New Space-Themed Hero Section With Twinkling Stars */}
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
+        {/* Deep space background - static gradient for performance */}
+        <div 
+          className="absolute inset-0 overflow-hidden"
+          style={{ 
+            background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
+            zIndex: -10
+          }}
+        />
+        
+        {/* Optimized starfield with fewer stars for better performance */}
         <StarfieldBackground
-          starCount={200}
+          starCount={90}
           opacity={1}
           withNebulas={true}
         />
-      </div>
-      
-      {/* New Space-Themed Hero Section With Twinkling Stars */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
         
         {/* Reduced nebula explosions for better performance */}
         <NebulaExplosion 
@@ -256,7 +230,7 @@ export default function Home() {
                   {/* Logo display with Saturn rings effect - conditionally rendered for mobile */}
                   <div className="relative h-full w-full flex items-center justify-center">
                     {/* Saturn rings effect - hidden on mobile for performance - increased size with improved positioning */}
-                    <div className="absolute w-[500px] h-[500px] rounded-full hidden md:block" style={{left: '-100px', top: '-100px', zIndex: -1}}>
+                    <div className="absolute w-[450px] h-[450px] rounded-full hidden md:block" style={{left: '-75px', top: '-75px', zIndex: 1}}>
                       {/* Outer glow ring */}
                       <div
                         className="absolute inset-0 rounded-full saturn-outer-ring"

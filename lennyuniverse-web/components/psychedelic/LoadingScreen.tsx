@@ -32,53 +32,65 @@ const LoadingScreen = ({
   ];
 
   useEffect(() => {
-    // Ultra-optimized loading sequence for Vercel 1.7 vCPU
+    const typewriterDuration = 2500; // Time for typewriter to complete in ms
+    const explosionDuration = 1500; // Time for explosion effect in ms
+    const totalAnimationTime = Math.max(minDuration, typewriterDuration + explosionDuration);
+    
+    // Always show typewriter text for its full duration
     const loadingTimer = setTimeout(() => {
-      // Skip particle explosion completely for Vercel performance
-      setParticlesExploded(false);
+      // Trigger explosion after typewriter animation
+      setParticlesExploded(true);
       
-      // Split the animation into two parts with a delay between
-      // This spreads CPU usage over time instead of concentrating it
-      setTimeout(() => {
-        // First just scale the logo - minimal CPU usage
+      // Sequence the logo animations
+      logoControls.start({
+        scale: 1.3,
+        transition: { duration: 0.4, ease: "easeOut" }
+      }).then(() => {
+        // Add glow effect
         logoControls.start({
-          scale: 1.3,
-          transition: { duration: 0.4, ease: "linear" }
-        }).then(() => {
-          // Short delay to let CPU recover
-          setTimeout(() => {
-            // Then add the glow effect
-            logoControls.start({
-              filter: 'drop-shadow(0 0 15px #FF00FF)',
-              transition: { duration: 0.3, ease: "linear" }
-            }).then(() => {
-              // Another short delay before fade-out
-              setTimeout(() => {
-                // Simple fade out - very lightweight
-                controls.start({
-                  opacity: 0,
-                  transition: { duration: 0.2, ease: "linear" }
-                }).then(() => {
-                  setIsLoading(false);
-                  if (onLoadingComplete) onLoadingComplete();
-                });
-              }, 100);
-            });
-          }, 100);
+          filter: 'drop-shadow(0 0 20px #FF00FF)',
+          transition: { duration: 0.3, ease: "easeOut" }
         });
-      }, 100);
-    }, Math.min(1000, minDuration)); // Just 1 second for initial loading - helps with 1.7 vCPU
+      });
+      
+      // Fade out only after entire animation sequence
+      setTimeout(() => {
+        controls.start({
+          opacity: 0,
+          transition: { duration: 0.5, ease: "easeOut" }
+        }).then(() => {
+          setIsLoading(false);
+          if (onLoadingComplete) onLoadingComplete();
+        });
+      }, explosionDuration);
+      
+    }, totalAnimationTime - explosionDuration); // Start explosion with enough time for fade out
 
     return () => clearTimeout(loadingTimer);
   }, [onLoadingComplete, minDuration, controls, logoControls]);
 
-  // Generate random particles
+  // Generate optimized explosion particles with better distribution
   const particles = Array.from({ length: particleCount }).map((_, i) => {
-    const color = particleColors[Math.floor(Math.random() * particleColors.length)];
-    const size = Math.random() * 20 + 5;
-    const distance = Math.random() * 2000 + 500; // How far the particle will travel
-    const angle = Math.random() * Math.PI * 2; // Random angle in radians
-    const delay = Math.random() * 0.5; // Random delay for explosion
+    // Generate particles in a more visually appealing way
+    const colorIndex = Math.floor(Math.random() * particleColors.length);
+    const color = particleColors[colorIndex];
+    
+    // Vary size based on distance for more natural explosion
+    const distanceFactor = Math.random();
+    const size = distanceFactor < 0.7 
+      ? Math.random() * 10 + 5  // Smaller particles travel further
+      : Math.random() * 20 + 10; // Larger particles stay closer
+    
+    // Distance is inversely proportional to size for more realistic physics
+    const distance = (1.5 - size/30) * (Math.random() * 1000 + 300);
+    
+    // Create more structured explosion with slight variance
+    const angleSection = (Math.PI * 2) / particleCount;
+    const angleVariance = angleSection * 0.8; // Some variance but keep distribution even
+    const angle = (i * angleSection) + (Math.random() * angleVariance - angleVariance/2);
+    
+    // Stagger the particle release for more natural explosion
+    const delay = Math.random() * 0.3;
     
     return { id: i, color, size, distance, angle, delay };
   });
@@ -212,7 +224,7 @@ const LoadingScreen = ({
               </div>
             </motion.div>
 
-            {/* Explosion particles */}
+            {/* Enhanced explosion particles */}
             {particlesExploded && particles.map((particle) => (
               <motion.div
                 key={`particle-${particle.id}`}
@@ -224,14 +236,20 @@ const LoadingScreen = ({
                   left: '50%',
                   top: '50%',
                   transform: 'translate(-50%, -50%)',
-                  boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}`,
+                  boxShadow: `0 0 ${particle.size * 0.8}px ${particle.color}`,
+                  filter: `blur(${Math.random() > 0.7 ? '1px' : '0'})`,
                 }}
-                initial={{ x: 0, y: 0, opacity: 0 }}
+                initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
                 animate={{
                   x: Math.cos(particle.angle) * particle.distance,
                   y: Math.sin(particle.angle) * particle.distance,
-                  opacity: [0, 1, 0],
-                  scale: [0, 1, 0],
+                  opacity: [0, 1, 0.8, 0],
+                  scale: [0, 1.2, 0.8, 0],
+                  filter: [
+                    `blur(0px)`,
+                    `blur(${Math.random() * 2}px)`,
+                    `blur(${Math.random() * 4}px)`,
+                  ]
                 }}
                 transition={{
                   duration: 1.5,
@@ -273,23 +291,50 @@ const LoadingScreen = ({
   );
 };
 
-// Helper component for typewriter effect
+// Enhanced typewriter effect that always completes typing
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayedText, setDisplayedText] = useState('');
   const index = useRef(0);
+  const typingCompletedRef = useRef(false);
   
   useEffect(() => {
+    // Calculate character typing speed to ensure text completes in ~2.3 seconds
+    const charSpeed = Math.max(30, 2300 / text.length);
+    
     if (index.current < text.length) {
       const timeoutId = setTimeout(() => {
         setDisplayedText(text.substring(0, index.current + 1));
         index.current += 1;
-      }, 100);
+      }, charSpeed);
       
       return () => clearTimeout(timeoutId);
+    } else if (!typingCompletedRef.current) {
+      typingCompletedRef.current = true;
     }
   }, [displayedText, text]);
   
-  return <span>{displayedText}<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>_</motion.span></span>;
+  return (
+    <span>
+      {displayedText}
+      {index.current < text.length && (
+        <motion.span 
+          animate={{ opacity: [0, 1, 0] }} 
+          transition={{ duration: 0.8, repeat: Infinity }}
+        >
+          _
+        </motion.span>
+      )}
+      {index.current >= text.length && (
+        <motion.span 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0] }} 
+          transition={{ duration: 0.8, repeat: Infinity }}
+        >
+          _
+        </motion.span>
+      )}
+    </span>
+  );
 };
 
 export default LoadingScreen;
