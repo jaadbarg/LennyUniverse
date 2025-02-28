@@ -1,44 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
-import NextImage from 'next/image';
-import { memo } from 'react';
-
-// Create a memoized image component that won't cause fetchPriority warnings
-const Image = memo(({ src, alt, width, height, className, style, fill, priority }: any) => {
-  const imageProps: any = {
-    src,
-    alt,
-    width,
-    height,
-    className,
-    style
-  };
-  
-  if (fill) {
-    imageProps.fill = fill;
-  }
-  
-  if (priority) {
-    imageProps.priority = priority;
-  }
-  
-  return <NextImage {...imageProps} />;
-});
-
-Image.displayName = 'MemoizedImage';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import PsychedelicCard from '../components/psychedelic/PsychedelicCard';
 import NeonButton from '../components/psychedelic/NeonButton';
 import PsychedelicBackground from '../components/psychedelic/PsychedelicBackground';
-import NebulaBackground from '../components/psychedelic/NebulaBackground';
 import SVGFilters from '../components/psychedelic/SVGFilters';
 import StarfieldBackground from '../components/psychedelic/StarfieldBackground';
 import SpaceText from '../components/psychedelic/SpaceText';
 import NebulaExplosion from '../components/psychedelic/NebulaExplosion';
 import ClickEffects from '../components/psychedelic/ClickEffects';
+import PsychedelicCard from '../components/psychedelic/PsychedelicCard';
 import { useInView } from 'react-intersection-observer';
 
 export default function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
@@ -74,6 +48,9 @@ export default function Home() {
   });
   
   useEffect(() => {
+    // Set component as loaded
+    setIsLoaded(true);
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -259,9 +236,9 @@ export default function Home() {
                       <img 
                         src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png?fit=1080%2C901&ssl=1"
                         alt="Lenny Universe Logo"
-                        width={240}
-                        height={240}
                         className="relative z-10"
+                        style={{ width: "auto", height: "auto", maxWidth: "240px", maxHeight: "240px" }}
+                        loading="eager"
                       />
                       
                       {/* Inner glow for the logo */}
@@ -270,8 +247,6 @@ export default function Home() {
                         filter: 'blur(2px)'
                       }}></div>
                     </div>
-                    
-                    {/* Removed LENNY text as requested */}
                   </div>
                 </div>
               </div>
@@ -516,69 +491,59 @@ export default function Home() {
         
         <PsychedelicBackground variant="waves" intensity={0.8} primaryColor="#FF00FF" secondaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={meetLennyInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.8 }}
-                className="order-2 lg:order-1"
+                className="mx-auto"
               >
-                <div className="relative h-[500px] w-[500px] rounded-lg z-10">
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-700 via-pink-600 to-purple-900 rounded-lg"
-                    animate={{
-                      background: [
-                        "linear-gradient(45deg, rgba(157, 0, 255, 0.9) 0%, rgba(255, 0, 255, 0.9) 50%, rgba(0, 255, 255, 0.9) 100%)",
-                        "linear-gradient(135deg, rgba(157, 0, 255, 0.9) 0%, rgba(255, 0, 255, 0.9) 50%, rgba(0, 255, 255, 0.9) 100%)",
-                        "linear-gradient(225deg, rgba(157, 0, 255, 0.9) 0%, rgba(255, 0, 255, 0.9) 50%, rgba(0, 255, 255, 0.9) 100%)",
-                      ]
-                    }}
-                    transition={{
-                      duration: 10,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  />
-                  <motion.div 
-                    className="absolute -inset-2 rounded-lg"
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px 0px rgba(157, 0, 255, 0.5)",
-                        "0 0 40px 5px rgba(157, 0, 255, 0.6)",
-                        "0 0 20px 0px rgba(157, 0, 255, 0.5)",
-                      ]
-                    }}
-                    transition={{
-                      duration: 4,
+                <motion.div 
+                  className="relative w-full max-w-5xl mx-auto p-8 rounded-lg bg-gradient-to-r from-purple-900/80 via-pink-800/80 to-purple-900/80 shadow-2xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: 1,
+                    boxShadow: [
+                      "0 0 30px 5px rgba(255,0,255,0.5)",
+                      "0 0 50px 10px rgba(255,0,255,0.6)",  
+                      "0 0 30px 5px rgba(255,0,255,0.5)"
+                    ]
+                  }}
+                  transition={{
+                    boxShadow: {
+                      duration: 3,
                       repeat: Infinity,
                       repeatType: "reverse"
-                    }}
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1 }}
-                      className="w-full h-full flex items-center justify-center"
-                    >
-                      <img 
-                        src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/My-Story.png?fit=750%2C347&ssl=1"
-                        alt="My Story - Lenny Universe"
-                        className="max-w-full max-h-full object-contain"
-                        style={{
-                          filter: "drop-shadow(0 0 15px rgba(255,0,255,0.8))",
-                        }}
-                      />
-                    </motion.div>
+                    },
+                    opacity: { duration: 1 }
+                  }}
+                >
+                  <div className="relative">
+                    <img 
+                      src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/My-Story.png"
+                      alt="My Story - Lenny Universe"
+                      className="w-full rounded-md shadow-xl"
+                      style={{ 
+                        maxWidth: "100%",
+                        filter: "drop-shadow(0 0 20px rgba(255,0,255,0.6))" 
+                      }}
+                    />
+                    {/* Glowing overlay */}
+                    <div 
+                      className="absolute inset-0 rounded-md pointer-events-none"
+                      style={{
+                        boxShadow: "inset 0 0 30px rgba(255,0,255,0.7)",
+                      }}
+                    />
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
               
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={meetLennyInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="order-1 lg:order-2"
+                className="mx-auto text-center max-w-4xl mt-8"
               >
                 <h2 className="text-3xl md:text-5xl font-bold mb-6 neon-purple-text-enhanced">
                   Meet Lenny
