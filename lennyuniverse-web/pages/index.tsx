@@ -94,7 +94,7 @@ export default function Home() {
         enabled={true}
         maxEffects={3}
         effectDuration={2000}
-        colors={['#FF00FF', '#9D00FF', '#00FFFF', '#FF40FF']}
+        colors={['#E233FF', '#8B31FF', '#00D1D1', '#3F7DFF', '#5C14E8', '#9345FF']}
       />
       
       {/* New Space-Themed Hero Section With Twinkling Stars */}
@@ -103,7 +103,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 overflow-hidden"
           style={{ 
-            background: 'linear-gradient(135deg, rgba(5,0,15,1) 0%, rgba(15,0,30,1) 100%)',
+            background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
             zIndex: -10
           }}
         />
@@ -136,7 +136,7 @@ export default function Home() {
               {/* Simple cosmic title */}
               <div className="relative mb-10">
                 {/* Ambient glow behind text */}
-                <div className="absolute -inset-5 bg-gradient-radial from-purple-600/20 via-pink-500/10 to-transparent rounded-full blur-xl"></div>
+                <div className="absolute -inset-5 bg-gradient-radial from-psychedelicPurple/20 via-psychedelicMagenta/10 to-transparent rounded-full blur-xl"></div>
                 
                 {/* Main heading - Your journey of */}
                 <h1 className="text-4xl md:text-6xl font-bold text-center md:text-left mb-6 font-display">
@@ -144,21 +144,21 @@ export default function Home() {
                     text="Your journey of" 
                     size="3xl"
                     variant="cosmic"
-                    glowColor="#9D00FF"
+                    glowColor="var(--psychedelic-indigo)"
                   />
                 </h1>
                 
                 {/* Featured text - blissful growth */}
                 <div className="relative py-8 mb-8 backdrop-blur-sm">
                   {/* Simple background with gradient border */}
-                  <div className="absolute inset-0 bg-black/30 border border-purple-500/20 rounded-xl"></div>
+                  <div className="absolute inset-0 bg-deepSpace/30 border border-psychedelicPurple/20 rounded-xl"></div>
                   
                   {/* Static glowing text */}
                   <div className="flex justify-center items-center">
                     <SpaceText 
                       text="blissful growth" 
                       size="4xl"
-                      glowColor="#FF00FF"
+                      glowColor="var(--psychedelic-magenta)"
                       className="font-audiowide tracking-widest uppercase"
                       animated={true}
                     />
@@ -270,7 +270,7 @@ export default function Home() {
                       <SpaceText 
                         text="LENNY" 
                         size="2xl"
-                        glowColor="#FF00FF"
+                        glowColor="var(--psychedelic-magenta)"
                         animated={true}
                         variant="cosmic"
                       />
@@ -559,7 +559,7 @@ export default function Home() {
       
       {/* CTA Section */}
       <section className="py-24 relative" ref={ctaRef}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-deepSpace/40 to-deepSpace/90 z-0" />
         
         {/* Static starfield background */}
         <div className="absolute inset-0 z-0 opacity-40">

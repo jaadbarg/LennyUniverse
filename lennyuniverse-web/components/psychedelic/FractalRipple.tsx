@@ -15,7 +15,7 @@ interface FractalRippleProps {
 const FractalRipple = memo(({
   x,
   y,
-  color = '#FF00FF',
+  color = '#E233FF', // Updated to psychedelicMagenta
   size = 100,
   duration = 1.2,
   iterationCount = 4

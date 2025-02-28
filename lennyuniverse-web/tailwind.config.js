@@ -7,9 +7,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        neonPink: "#FF00FF",
-        neonPurple: "#9D00FF",
-        neonTeal: "#00FFFF",
+        // Primary psychedelic palette
+        psychedelicMagenta: "#E233FF",
+        psychedelicPurple: "#8B31FF",
+        psychedelicBlue: "#3F7DFF",
+        psychedelicTeal: "#00D1D1",
+        psychedelicIndigo: "#5C14E8",
+        
+        // Secondary accents
+        psychedelicGold: "#FFD034",
+        psychedelicAmethyst: "#9345FF",
+        psychedelicPeacock: "#37BDFF",
+        
+        // Neutral tones
+        deepSpace: "#0A020F",
+        cosmicGray: "#232135",
+        starWhite: "#F2EAFF",
+        
+        // Legacy colors for backward compatibility
+        neonPink: "#E233FF",
+        neonPurple: "#8B31FF",
+        neonTeal: "#00D1D1",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

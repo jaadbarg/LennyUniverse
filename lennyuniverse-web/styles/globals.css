@@ -8,10 +8,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --neon-pink: #FF00FF;
-  --neon-purple: #9D00FF;
-  --neon-teal: #00FFFF;
-  --dark-bg: #0c0c0c;
+  /* Primary psychedelic palette - carefully selected harmonious hues */
+  --psychedelic-magenta: #E233FF; /* Warmer, less harsh magenta */
+  --psychedelic-purple: #8B31FF; /* Rich purple with good contrast */
+  --psychedelic-blue: #3F7DFF; /* Deep atmospheric blue */
+  --psychedelic-teal: #00D1D1; /* Vibrant teal that complements purple */
+  --psychedelic-indigo: #5C14E8; /* Deep, cosmic indigo */
+  
+  /* Secondary accents */
+  --psychedelic-gold: #FFD034; /* Warm gold for occasional accents */
+  --psychedelic-amethyst: #9345FF; /* Lighter alternative to main purple */
+  --psychedelic-peacock: #37BDFF; /* Bright blue accent */
+  
+  /* Neutral tones for balance */
+  --deep-space: #0A020F; /* Near-black with subtle purple tint */
+  --cosmic-gray: #232135; /* Purple-tinted dark gray */
+  --star-white: #F2EAFF; /* Slightly purplish white */
+  
+  /* Gradients - primary brand colors */
+  --gradient-cosmic: linear-gradient(135deg, var(--psychedelic-purple), var(--psychedelic-indigo));
+  --gradient-nebula: linear-gradient(135deg, var(--psychedelic-magenta), var(--psychedelic-purple), var(--psychedelic-teal));
+  --gradient-aurora: linear-gradient(135deg, var(--psychedelic-teal), var(--psychedelic-blue), var(--psychedelic-purple));
+  
+  /* Legacy variables for backward compatibility */
+  --neon-pink: var(--psychedelic-magenta);
+  --neon-purple: var(--psychedelic-purple);
+  --neon-teal: var(--psychedelic-teal);
+  --dark-bg: var(--deep-space);
+  
+  /* Typography */
   --font-display: 'Audiowide', 'Orbitron', sans-serif;
   --font-body: 'Inter', sans-serif;
 }

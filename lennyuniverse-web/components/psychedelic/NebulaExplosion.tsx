@@ -36,13 +36,14 @@ const NebulaExplosion = memo(({
     const size = 100 + Math.random() * 150; // Larger explosion size for more impact
     const duration = 6 + Math.random() * 4; // Longer duration for more visible effect
     
-    // Enhanced color selection - more vibrant, higher opacity
+    // Refined psychedelic palette based on our theme variables
     const colors = [
-      'rgba(255,0,255,0.25)', // Bright Pink
-      'rgba(157,0,255,0.25)', // Purple
-      'rgba(0,255,255,0.25)',  // Teal
-      'rgba(255,50,150,0.25)', // Pink-Red
-      'rgba(100,0,255,0.25)',  // Indigo
+      'rgba(226,51,255,0.25)', // psychedelicMagenta
+      'rgba(139,49,255,0.25)', // psychedelicPurple
+      'rgba(0,209,209,0.25)',  // psychedelicTeal
+      'rgba(63,125,255,0.25)', // psychedelicBlue
+      'rgba(92,20,232,0.25)',  // psychedelicIndigo
+      'rgba(147,69,255,0.25)', // psychedelicAmethyst
     ];
     const color = colors[Math.floor(Math.random() * colors.length)];
     

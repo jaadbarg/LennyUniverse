@@ -35,9 +35,15 @@ const StarfieldBackground = memo(({
     const delay = (groupIndex * 0.8 + Math.random() * 1.5) % 5;
     const duration = 2 + (i % 3) * 1.2; // Only 3 different durations
     
-    // Simpler colors - fewer unique values for better performance
+    // Enhanced color palette with refined psychedelic theme
     const colorIndex = Math.floor(Math.random() * 5);
-    const colorPalette = ['#FFFFFF', '#FFFFFF', '#FFDDFF', '#9DDDFF', '#FFFF9D'];
+    const colorPalette = [
+      '#F2EAFF', // Purplish white (starWhite)
+      '#F2EAFF', // Repeat for more common
+      '#E9D6FF', // Light purple tint
+      '#D1F2FF', // Light teal tint
+      '#FFF8D6', // Light gold tint
+    ];
     const color = colorPalette[colorIndex];
     
     return { x, y, size, color, delay, duration, blurAmount };
@@ -57,11 +63,11 @@ const StarfieldBackground = memo(({
     const sizes = [35, 45, 40];
     const size = sizes[i];
     
-    // Simplified color options - fewer unique values for performance
+    // Refined psychedelic color schemes for nebulas
     const colorSchemes = [
-      { main: 'rgba(255,0,255,0.12)', glow: 'rgba(255,0,255,0.06)', outer: 'rgba(255,0,255,0.02)' }, // Magenta
-      { main: 'rgba(157,0,255,0.12)', glow: 'rgba(157,0,255,0.06)', outer: 'rgba(157,0,255,0.02)' }, // Purple
-      { main: 'rgba(0,255,255,0.12)', glow: 'rgba(0,255,255,0.06)', outer: 'rgba(0,255,255,0.02)' }, // Teal
+      { main: 'rgba(226,51,255,0.12)', glow: 'rgba(226,51,255,0.06)', outer: 'rgba(226,51,255,0.02)' }, // psychedelicMagenta
+      { main: 'rgba(139,49,255,0.12)', glow: 'rgba(139,49,255,0.06)', outer: 'rgba(139,49,255,0.02)' }, // psychedelicPurple
+      { main: 'rgba(0,209,209,0.12)', glow: 'rgba(0,209,209,0.06)', outer: 'rgba(0,209,209,0.02)' }, // psychedelicTeal
     ];
     const colorScheme = colorSchemes[i];
     
