@@ -1,10 +1,19 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
+import * as THREE from 'three';
+
+interface OptimizedSphereProps {
+  position: [number, number, number];
+  color: string;
+  size?: number;
+  speed?: number;
+}
 
 // Optimized floating sphere component
-const OptimizedSphere = ({ position, color, size = 1, speed = 0.001 }) => {
-  const meshRef = useRef();
+const OptimizedSphere = ({ position, color, size = 1, speed = 0.001 }: OptimizedSphereProps) => {
+  // Add proper typing to the mesh ref
+  const meshRef = useRef<THREE.Mesh>(null);
   const offset = useMemo(() => Math.random() * Math.PI * 2, []);
   
   useFrame(({ clock }) => {
@@ -22,8 +31,13 @@ const OptimizedSphere = ({ position, color, size = 1, speed = 0.001 }) => {
   );
 };
 
+interface Scene3DProps {
+  count?: number;
+  colors?: string[];
+}
+
 // Main Scene3D component with spheres already included
-const Scene3D = ({ count = 3, colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }) => {
+const Scene3D = ({ count = 3, colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }: Scene3DProps) => {
   // Pre-calculate sphere positions for performance
   const sphereData = useMemo(() => {
     return Array.from({ length: count }).map(() => ({
@@ -31,7 +45,7 @@ const Scene3D = ({ count = 3, colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }) => {
         (Math.random() - 0.5) * 8,
         (Math.random() - 0.5) * 8,
         (Math.random() - 0.5) * 4
-      ],
+      ] as [number, number, number],
       size: 0.5 + Math.random() * 0.5,
       color: colors[Math.floor(Math.random() * colors.length)]
     }));

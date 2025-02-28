@@ -1,10 +1,18 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
+
+interface OptimizedCubeProps {
+  color: string;
+  position: [number, number, number];
+  rotationSpeed?: number;
+}
 
 // Performance-optimized single cube component
-const OptimizedCube = ({ color, position, rotationSpeed = 0.002 }) => {
-  const meshRef = useRef();
+const OptimizedCube = ({ color, position, rotationSpeed = 0.002 }: OptimizedCubeProps) => {
+  // Add proper typing to the mesh ref
+  const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
     if (meshRef.current) {
@@ -21,24 +29,35 @@ const OptimizedCube = ({ color, position, rotationSpeed = 0.002 }) => {
   );
 };
 
+interface HypercubeSceneProps {
+  count?: number;
+  colors?: string[];
+  spread?: number;
+  speed?: number;
+  minSize?: number;
+  maxSize?: number;
+  intensity?: number;
+  interactive?: boolean;
+}
+
 // Main scene component with performance optimizations
 const HypercubeScene = ({ 
   count = 3, // Drastically reduced count
   colors = ['#FF00FF', '#9D00FF', '#00FFFF'], 
   spread = 5, 
   speed = 0.1, // Reduced speed
-  minSize, 
-  maxSize, 
-  intensity,
+  minSize = 1,
+  maxSize = 2,
+  intensity = 1,
   interactive = false
-}: any) => {
+}: HypercubeSceneProps) => {
   // Pre-calculate cube positions instead of random generation during render
   const cubePositions = useMemo(() => {
     return Array.from({ length: count }).map(() => [
       (Math.random() - 0.5) * spread,
       (Math.random() - 0.5) * spread,
       (Math.random() - 0.5) * spread
-    ]);
+    ] as [number, number, number]);
   }, [count, spread]);
   
   return (
