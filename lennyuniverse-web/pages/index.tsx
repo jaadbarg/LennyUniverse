@@ -109,20 +109,20 @@ export default function Home() {
           }}
         />
         
-        {/* Floating 4D hypercubes background */}
-        <div className="absolute inset-0 z-0 opacity-80">
+        {/* Floating 4D hypercubes background - optimized */}
+        <div className="absolute inset-0 z-0 opacity-60">
           <HypercubeScene 
-            count={10} 
+            count={3} 
             colors={['#FF00FF', '#9D00FF', '#00FFFF']} 
-            spread={20}
-            speed={0.8}
-            intensity={1.2}
+            spread={10}
+            speed={0.1}
+            intensity={0.8}
           />
         </div>
         
-        {/* 3D floating orbs background */}
+        {/* 3D floating orbs background - optimized */}
         <div className="absolute inset-0 z-0">
-          <Scene3D />
+          <Scene3D count={3} />
         </div>
         
         <motion.div 
@@ -539,16 +539,16 @@ export default function Home() {
       <section className="py-24 relative" ref={ctaRef}>
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90 z-0" />
         
-        {/* Add hypercubes to CTA background with different settings */}
-        <div className="absolute inset-0 z-0 opacity-60">
+        {/* Add hypercubes to CTA background with optimized settings */}
+        <div className="absolute inset-0 z-0 opacity-40">
           <HypercubeScene 
-            count={6} 
+            count={2} 
             colors={['#FF00FF', '#00FFFF', '#9D00FF']} 
-            spread={25}
-            speed={0.6}
+            spread={15}
+            speed={0.1}
             minSize={1.5}
-            maxSize={3}
-            intensity={0.8}
+            maxSize={2}
+            intensity={0.5}
             interactive={false}
           />
         </div>

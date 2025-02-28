@@ -11,12 +11,12 @@ interface FloatingElementsProps {
 }
 
 const FloatingElements: React.FC<FloatingElementsProps> = ({
-  count = 15,
+  count = 6, // Reduced from 15 to 6
   colors = ['#FF00FF', '#9D00FF', '#00FFFF'],
-  shapes = ['circle', 'square', 'triangle', 'star'],
+  shapes = ['circle', 'square'], // Simplified shapes
   minSize = 20,
-  maxSize = 60,
-  intensity = 1,
+  maxSize = 50, // Reduced max size
+  intensity = 0.6, // Reduced animation intensity
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const elementsRef = useRef<HTMLDivElement[]>([]);
@@ -73,27 +73,27 @@ const FloatingElements: React.FC<FloatingElementsProps> = ({
       elementsRef.current.push(element);
     }
     
-    // Animate elements
+    // Animate elements - with optimized GSAP animations
     elementsRef.current.forEach(element => {
-      // Random animation parameters
-      const duration = 5 + Math.random() * 20;
-      const xMovement = 100 * intensity * (Math.random() - 0.5);
-      const yMovement = 100 * intensity * (Math.random() - 0.5);
-      const rotation = 360 * (Math.random() - 0.5) * intensity;
-      const scale = 0.8 + Math.random() * 0.4;
+      // Random animation parameters - simpler, slower animations
+      const duration = 10 + Math.random() * 15; // Longer animations = less work for the browser
+      const xMovement = 50 * intensity * (Math.random() - 0.5); // Reduced movement range
+      const yMovement = 50 * intensity * (Math.random() - 0.5); // Reduced movement range
+      const rotation = 180 * (Math.random() - 0.5) * intensity; // Reduced rotation
+      const scale = 0.9 + Math.random() * 0.2; // Less scaling
       
-      // GSAP timeline for each element
+      // GSAP timeline with fewer properties and reduced complexity
       gsap.to(element, {
         x: `${xMovement}%`,
         y: `${yMovement}%`,
         rotation: rotation,
-        scale: scale,
-        opacity: Math.random() * 0.4,
+        opacity: 0.1 + Math.random() * 0.2, // Lower opacity
         duration: duration,
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
         delay: Math.random() * 5,
+        // Removed scale animation as it's more expensive
       });
     });
     

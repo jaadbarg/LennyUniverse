@@ -31,7 +31,7 @@ const ParticleBackground = () => {
               value: "#0c0c0c",
             },
           },
-          fpsLimit: 120,
+          fpsLimit: 30, // Reduced from 120 to 30
           particles: {
             color: {
               value: ["#FF00FF", "#9D00FF", "#00FFFF"],
@@ -40,21 +40,21 @@ const ParticleBackground = () => {
               color: "#FF00FF",
               distance: 150,
               enable: true,
-              opacity: 0.3,
+              opacity: 0.2,
               width: 1,
             },
             collisions: {
-              enable: true,
+              enable: false, // Disabled for performance
             },
             move: {
               direction: "none",
               enable: true,
-              outMode: "bounce",
-              random: true,
-              speed: 1,
+              outMode: "out",
+              random: false,
+              speed: 0.5, // Reduced from 1 to 0.5
               straight: false,
               attract: {
-                enable: true,
+                enable: false, // Disabled for performance
                 rotateX: 600,
                 rotateY: 1200,
               },
@@ -62,28 +62,28 @@ const ParticleBackground = () => {
             number: {
               density: {
                 enable: true,
-                area: 800,
+                area: 1200, // Increased area = fewer particles
               },
-              value: 80,
+              value: 30, // Reduced from 80 to 30
             },
             opacity: {
               value: 0.5,
               random: true,
               anim: {
-                enable: true,
+                enable: false, // Disabled for performance
                 speed: 1,
                 opacity_min: 0.1,
                 sync: false,
               },
             },
             shape: {
-              type: ["circle", "triangle", "star"],
+              type: ["circle"], // Simplified to just circles
             },
             size: {
-              value: { min: 1, max: 5 },
+              value: { min: 1, max: 3 }, // Smaller particles
               random: true,
               anim: {
-                enable: true,
+                enable: false, // Disabled for performance
                 speed: 2,
                 size_min: 0.1,
                 sync: false,
@@ -93,16 +93,16 @@ const ParticleBackground = () => {
           interactivity: {
             events: {
               onHover: {
-                enable: true,
+                enable: false, // Disabled for performance
                 mode: "grab",
                 parallax: {
-                  enable: true,
+                  enable: false, // Disabled for performance
                   force: 60,
                   smooth: 10,
                 },
               },
               onClick: {
-                enable: true,
+                enable: false, // Disabled for performance
                 mode: "push",
               },
               resize: true,
@@ -130,7 +130,7 @@ const ParticleBackground = () => {
                 quantity: 2,
               },
             },
-            detectRetina: true,
+            detectRetina: false, // Disabled for performance
           },
         }}
       />

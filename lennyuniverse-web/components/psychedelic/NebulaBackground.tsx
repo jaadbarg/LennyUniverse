@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react'; // Import memo for component optimization
 
 interface NebulaBackgroundProps {
   opacity?: number;
@@ -6,7 +7,8 @@ interface NebulaBackgroundProps {
   zIndex?: number;
 }
 
-const NebulaBackground = ({
+// Optimize the component with memo to prevent unnecessary re-renders
+const NebulaBackground = memo(({
   opacity = 0.8,
   animate = true,
   zIndex = -10,
@@ -19,18 +21,23 @@ const NebulaBackground = ({
         filter: 'brightness(0.7) contrast(1.2)',
         opacity,
         zIndex,
+        willChange: animate ? 'background-position' : 'auto', // Hardware acceleration hint
       }}
       animate={animate ? {
         backgroundPosition: ['0% 0%', '100% 100%'],
       } : {}}
       transition={{
-        duration: 20,
+        duration: 40, // Slower animation = less CPU usage
         ease: "linear",
         repeat: Infinity,
         repeatType: "reverse"
       }}
+      initial={false} // Skip initial animation
     />
   );
-};
+});
+
+// Add display name for better debugging
+NebulaBackground.displayName = 'NebulaBackground';
 
 export default NebulaBackground;
