@@ -108,18 +108,18 @@ export default function Home() {
           }}
         />
         
-        {/* Starfield background - pure CSS animations */}
+        {/* Enhanced starfield background with more stars */}
         <StarfieldBackground
-          starCount={150}
+          starCount={250}
           opacity={1}
           withNebulas={true}
         />
         
-        {/* Occasional distant nebula explosions */}
+        {/* Enhanced nebula explosions - more frequent and dramatic */}
         <NebulaExplosion 
-          count={2}
-          interval={10000}
-          maxActive={1}
+          count={3}
+          interval={8000}
+          maxActive={2}
           zIndex={-5}
         />
         
@@ -221,10 +221,35 @@ export default function Home() {
                   {/* Ambient glow */}
                   <div className="absolute inset-0 rounded-full blur-xl bg-gradient-radial from-pink-600/20 via-purple-500/10 to-transparent"></div>
                   
-                  {/* Logo display */}
+                  {/* Logo display with Saturn rings effect */}
                   <div className="relative h-full w-full flex items-center justify-center">
-                    {/* Logo with white background and simple shine effect */}
-                    <div className="logo-shine rounded-full p-2 bg-white/90">
+                    {/* Saturn rings effect */}
+                    <div className="absolute z-5 w-[350px] h-[350px] rounded-full">
+                      {/* Outer glow ring */}
+                      <div
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          background: 'conic-gradient(from 0deg, #FF00FF20, #9D00FF30, #00FFFF30, #FF00FF20)',
+                          transform: 'rotate(30deg) scale(1.15, 0.2)',
+                          filter: 'blur(10px)',
+                          opacity: 0.8,
+                          animation: 'saturnRingPulse 10s linear infinite'
+                        }}
+                      />
+                      
+                      {/* Inner rings */}
+                      <div 
+                        className="absolute inset-0 rounded-full saturn-rings"
+                        style={{
+                          background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF08 3px, #FFFFFF08 4px), linear-gradient(135deg, #FF00FF30, #9D00FF50, #00FFFF30)',
+                          transform: 'rotate(30deg) scale(1.15, 0.18)',
+                          boxShadow: '0 0 20px 2px rgba(255, 0, 255, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.3)'
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Logo with white background and enhanced shine effect */}
+                    <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg">
                       <img 
                         src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png?fit=1080%2C901&ssl=1"
                         alt="Lenny Universe Logo"
@@ -232,15 +257,22 @@ export default function Home() {
                         height={220}
                         className="relative z-10"
                       />
+                      
+                      {/* Inner glow for the logo */}
+                      <div className="absolute inset-0 rounded-full" style={{
+                        boxShadow: 'inset 0 0 20px rgba(157, 0, 255, 0.3)',
+                        filter: 'blur(2px)'
+                      }}></div>
                     </div>
                     
-                    {/* Static cosmic text below logo */}
+                    {/* Enhanced cosmic text below logo */}
                     <div className="absolute -bottom-2 left-0 right-0 text-center">
                       <SpaceText 
                         text="LENNY" 
                         size="2xl"
                         glowColor="#FF00FF"
-                        animated={false}
+                        animated={true}
+                        variant="cosmic"
                       />
                     </div>
                   </div>

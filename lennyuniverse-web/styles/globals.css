@@ -270,28 +270,63 @@ h1, h2, h3, h4, .special-text {
   animation: rayRotate 20s linear infinite;
 }
 
-/* Star twinkling animation - ultra-lightweight using opacity only */
+/* Enhanced Star twinkling animation with custom properties */
 @keyframes twinkle {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: var(--twinkle-min, 0.5); transform: scale(0.95); }
+  50% { opacity: var(--twinkle-max, 1); transform: scale(1.05); }
 }
 
-/* Nebula explosion animation */
+/* Enhanced Nebula explosion animation with more dramatic effects */
 @keyframes nebulaExplosion {
-  0% { opacity: 0; transform: scale(0.1); }
-  30% { opacity: 1; transform: scale(1); }
-  70% { opacity: 0.7; transform: scale(1.1); }
-  100% { opacity: 0; transform: scale(1.5); }
+  0% { 
+    opacity: 0; 
+    transform: scale(0.1) rotate(0deg); 
+    filter: blur(20px) brightness(0.7);
+  }
+  30% { 
+    opacity: 1; 
+    transform: scale(1) rotate(5deg); 
+    filter: blur(8px) brightness(1.2);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2) rotate(8deg);
+    filter: blur(10px) brightness(1.5);
+  }
+  70% { 
+    opacity: 0.6; 
+    transform: scale(1.4) rotate(5deg); 
+    filter: blur(15px) brightness(1);
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(1.8) rotate(0deg); 
+    filter: blur(20px) brightness(0.5);
+  }
 }
 
 .twinkle-star {
   animation: twinkle 3s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 
-/* Nebula pulse animation */
+/* Enhanced nebula pulse animation with more dramatic effects */
 @keyframes nebulaPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
+  0% { 
+    opacity: 0.7; 
+    transform: scale(1) rotate(0deg); 
+    filter: blur(5px) brightness(0.9);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.15) rotate(5deg); 
+    filter: blur(3px) brightness(1.2);
+  }
+  100% { 
+    opacity: 0.7; 
+    transform: scale(1) rotate(0deg); 
+    filter: blur(5px) brightness(0.9);
+  }
 }
 
 .nebula-pulse {
@@ -342,6 +377,40 @@ h1, h2, h3, h4, .special-text {
     opacity: 0;
     transform: translate(var(--x, 100px), var(--y, 100px)) scale(1.5);
   }
+}
+
+/* Saturn ring pulse effect */
+@keyframes saturnRingPulse {
+  0% {
+    opacity: 0.7;
+    filter: blur(8px) brightness(0.9);
+  }
+  30% {
+    opacity: 0.9;
+    filter: blur(6px) brightness(1.1);
+  }
+  70% {
+    opacity: 0.8;
+    filter: blur(10px) brightness(1);
+  }
+  100% {
+    opacity: 0.7;
+    filter: blur(8px) brightness(0.9);
+  }
+}
+
+/* Saturn rings rotation */
+@keyframes saturnRingsRotate {
+  0% {
+    transform: rotate(30deg) scale(1.15, 0.18);
+  }
+  100% {
+    transform: rotate(390deg) scale(1.15, 0.18);
+  }
+}
+
+.saturn-rings {
+  animation: saturnRingsRotate 60s linear infinite;
 }
 
 .shooting-star {

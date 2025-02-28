@@ -32,15 +32,17 @@ const NebulaExplosion = memo(({
     const x = 10 + Math.random() * 80;
     const y = 10 + Math.random() * 80;
     
-    // Visual properties
-    const size = 60 + Math.random() * 100; // Explosion size (relatively large)
-    const duration = 5 + Math.random() * 3; // How long the explosion lasts
+    // Enhanced visual properties - bigger, more dramatic
+    const size = 100 + Math.random() * 150; // Larger explosion size for more impact
+    const duration = 6 + Math.random() * 4; // Longer duration for more visible effect
     
-    // Color selection - nebula explosions have distinct colors
+    // Enhanced color selection - more vibrant, higher opacity
     const colors = [
-      'rgba(255,0,255,0.15)', // Pink
-      'rgba(157,0,255,0.15)', // Purple
-      'rgba(0,255,255,0.15)',  // Teal
+      'rgba(255,0,255,0.25)', // Bright Pink
+      'rgba(157,0,255,0.25)', // Purple
+      'rgba(0,255,255,0.25)',  // Teal
+      'rgba(255,50,150,0.25)', // Pink-Red
+      'rgba(100,0,255,0.25)',  // Indigo
     ];
     const color = colors[Math.floor(Math.random() * colors.length)];
     
@@ -76,9 +78,12 @@ const NebulaExplosion = memo(({
             top: `${explosion.y}%`,
             width: `${explosion.size}px`,
             height: `${explosion.size}px`,
-            background: `radial-gradient(circle, ${explosion.color} 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${explosion.color} 5%, ${explosion.color.replace(',0.25)', ',0.15)')} 40%, ${explosion.color.replace(',0.25)', ',0.05)')} 70%, transparent 85%)`,
             opacity: 0,
             transform: 'scale(0.1)',
+            filter: 'blur(8px)',
+            boxShadow: `0 0 30px ${explosion.color}`,
+            mixBlendMode: 'screen',
             animation: `nebulaExplosion ${explosion.duration}s ease-in-out forwards`
           }}
         />

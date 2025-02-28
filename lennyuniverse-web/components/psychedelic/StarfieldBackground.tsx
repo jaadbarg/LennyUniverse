@@ -15,45 +15,64 @@ const StarfieldBackground = memo(({
   className = '',
   withNebulas = false
 }: StarfieldBackgroundProps) => {
-  // Precompute all stars at render time
-  const stars = Array.from({ length: Math.min(starCount, 150) }).map((_, i) => {
+  // Precompute all stars at render time - increased brightness and presence
+  const stars = Array.from({ length: Math.min(starCount, 250) }).map((_, i) => {
     // Static positioning
     const x = Math.random() * 100;
     const y = Math.random() * 100;
     
-    // Visual properties
-    const size = 1 + Math.random() * 2;
-    const blurAmount = Math.random() > 0.8 ? `${1 + Math.random() * 2}px` : '0';
+    // Enhanced visual properties - larger, brighter stars
+    const sizeFactor = Math.random();
+    const size = sizeFactor < 0.7 ? (1 + Math.random() * 2) : (2.5 + Math.random() * 3); // More large stars
     
-    // Animation properties - each star gets a unique but fixed animation delay
+    // Some stars get glow effect
+    const blurAmount = sizeFactor > 0.6 ? `${1 + Math.random() * 3}px` : '0';
+    
+    // Animation properties - more varied twinkle patterns
     const delay = Math.random() * 5;
-    const duration = 2 + Math.random() * 3;
+    const duration = 1.5 + Math.random() * 3; // Faster twinkling
     
-    // Color - most stars are white, some have subtle tint
+    // Enhanced color variety - more vibrant colors
     const colorIndex = Math.random();
     let color;
-    if (colorIndex > 0.9) color = '#FFDDFF'; // Slight pink
-    else if (colorIndex > 0.8) color = '#DDDDFF'; // Slight blue
+    if (colorIndex > 0.92) color = '#FF9DFF'; // Bright pink
+    else if (colorIndex > 0.84) color = '#9DDDFF'; // Bright blue
+    else if (colorIndex > 0.76) color = '#FFFF9D'; // Slight yellow
+    else if (colorIndex > 0.68) color = '#FFDDFF'; // Slight pink
     else color = '#FFFFFF'; // White
     
-    return { x, y, size, color, delay, duration, blurAmount };
+    // Make some stars (especially larger ones) extra bright
+    const brightness = sizeFactor > 0.7 ? 1.5 : 1;
+    
+    return { x, y, size, color, delay, duration, blurAmount, brightness };
   });
   
-  // Create a few static nebulas if requested
-  const nebulas = withNebulas ? Array.from({ length: 3 }).map((_, i) => {
+  // Create enhanced, more vibrant nebulas if requested
+  const nebulas = withNebulas ? Array.from({ length: 5 }).map((_, i) => {
     const x = 15 + Math.random() * 70; // Keep away from edges
     const y = 15 + Math.random() * 70;
-    const size = 30 + Math.random() * 30; // Large nebulas
+    const size = 30 + Math.random() * 40; // Larger nebulas
     
-    // Choose nebula color
+    // Choose nebula color with more vibrant options
     const colorSchemes = [
-      { main: 'rgba(255,0,255,0.03)', glow: 'rgba(255,0,255,0.02)' }, // Pink
-      { main: 'rgba(157,0,255,0.03)', glow: 'rgba(157,0,255,0.02)' }, // Purple
-      { main: 'rgba(0,255,255,0.03)', glow: 'rgba(0,255,255,0.02)' }, // Teal
+      { main: 'rgba(255,0,255,0.12)', glow: 'rgba(255,0,255,0.06)', outer: 'rgba(255,0,255,0.02)' }, // Magenta
+      { main: 'rgba(157,0,255,0.12)', glow: 'rgba(157,0,255,0.06)', outer: 'rgba(157,0,255,0.02)' }, // Purple
+      { main: 'rgba(0,255,255,0.12)', glow: 'rgba(0,255,255,0.06)', outer: 'rgba(0,255,255,0.02)' }, // Teal
+      { main: 'rgba(255,50,150,0.12)', glow: 'rgba(255,50,150,0.06)', outer: 'rgba(255,50,150,0.02)' }, // Pink-Red
+      { main: 'rgba(100,0,255,0.12)', glow: 'rgba(100,0,255,0.06)', outer: 'rgba(100,0,255,0.02)' }, // Indigo
     ];
     const colorScheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
     
-    return { x, y, size, ...colorScheme };
+    // Add animation cycle variation for more dynamic appearance
+    const animationDelay = i * 3;
+    const animationDuration = 10 + Math.random() * 15;
+    
+    return { 
+      x, y, size, 
+      ...colorScheme, 
+      animationDelay,
+      animationDuration
+    };
   }) : [];
   
   return (
@@ -81,16 +100,19 @@ const StarfieldBackground = memo(({
             width: `${star.size}px`,
             height: `${star.size}px`,
             backgroundColor: star.color,
-            boxShadow: `0 0 ${star.size + 1}px ${star.color}`,
+            boxShadow: `0 0 ${star.size * 2}px ${star.color}`,
             filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
-            opacity: 0.7,
+            opacity: 0.9, // Higher base opacity
             animationDelay: `${star.delay}s`,
-            animationDuration: `${star.duration}s`
-          }}
+            animationDuration: `${star.duration}s`,
+            // Add CSS variable for animation intensity
+            '--twinkle-min': '0.6',
+            '--twinkle-max': '1',
+          } as React.CSSProperties}
         />
       ))}
       
-      {/* Optional static nebulas */}
+      {/* Enhanced nebula effects */}
       {withNebulas && nebulas.map((nebula, i) => (
         <div
           key={`nebula-${i}`}
@@ -100,8 +122,16 @@ const StarfieldBackground = memo(({
             top: `${nebula.y}%`,
             width: `${nebula.size}vw`,
             height: `${nebula.size}vw`,
-            background: `radial-gradient(circle, ${nebula.main} 0%, ${nebula.glow} 50%, transparent 70%)`,
-            animationDelay: `${i * 3}s`
+            background: `radial-gradient(circle, 
+              ${nebula.main} 10%, 
+              ${nebula.glow} 40%, 
+              ${nebula.outer} 65%, 
+              transparent 80%)`,
+            animationDelay: `${nebula.animationDelay}s`,
+            animationDuration: `${nebula.animationDuration}s`,
+            opacity: 0.9,
+            mixBlendMode: 'screen',
+            filter: 'blur(5px)',
           }}
         />
       ))}
