@@ -47,8 +47,8 @@
   
   "functions": {
     "api/*": {
-      "memory": 1024, // Allocate only 1GB to API functions
-      "maxDuration": 10 // Cap at 10 seconds for API functions
+      "memory": 1024,
+      "maxDuration": 10
     }
   },
   
