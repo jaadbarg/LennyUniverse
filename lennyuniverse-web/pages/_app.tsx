@@ -15,9 +15,14 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   const [audioContextAllowed, setAudioContextAllowed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingStarted, setLoadingStarted] = useState(false); // Add this to track loading state
   
   useEffect(() => {
-    setMounted(true);
+    // Only initialize loading screen once
+    if (!loadingStarted) {
+      setLoadingStarted(true);
+      setMounted(true);
+    }
     
     // Set up a single user interaction requirement to initialize AudioContext
     const handleUserInteraction = () => {
@@ -36,7 +41,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       document.removeEventListener('touchstart', handleUserInteraction);
       document.removeEventListener('keydown', handleUserInteraction);
     };
-  }, []);
+  }, [loadingStarted]);
   
   // Create the audio visualization effect if allowed
   useEffect(() => {
@@ -147,11 +152,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <link rel="icon" href="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png" />
       </Head>
       
-      {/* Loading Screen */}
-      <LoadingScreen 
-        onLoadingComplete={handleLoadingComplete}
-        minDuration={3500}
-      />
+      {/* Loading Screen - only show if we're loading and loading has started */}
+      {isLoading && loadingStarted && (
+        <LoadingScreen 
+          onLoadingComplete={handleLoadingComplete}
+          minDuration={3500}
+        />
+      )}
       
       {/* Main Content */}
       {!isLoading && (

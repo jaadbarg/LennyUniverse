@@ -69,8 +69,10 @@ const StarfieldBackground = memo(({
       { main: 'rgba(226,51,255,0.12)', glow: 'rgba(226,51,255,0.06)', outer: 'rgba(226,51,255,0.02)' }, // psychedelicMagenta
       { main: 'rgba(139,49,255,0.12)', glow: 'rgba(139,49,255,0.06)', outer: 'rgba(139,49,255,0.02)' }, // psychedelicPurple
       { main: 'rgba(0,209,209,0.12)', glow: 'rgba(0,209,209,0.06)', outer: 'rgba(0,209,209,0.02)' }, // psychedelicTeal
+      { main: 'rgba(226,51,255,0.12)', glow: 'rgba(226,51,255,0.06)', outer: 'rgba(226,51,255,0.02)' }, // Fallback duplicates
+      { main: 'rgba(139,49,255,0.12)', glow: 'rgba(139,49,255,0.06)', outer: 'rgba(139,49,255,0.02)' }, // Fallback duplicates
     ];
-    const colorScheme = colorSchemes[i];
+    const colorScheme = colorSchemes[i % colorSchemes.length];
     
     // Fixed animation timings for consistent performance
     const animationDelay = i * 4;
