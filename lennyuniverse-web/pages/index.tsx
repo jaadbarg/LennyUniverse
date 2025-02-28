@@ -150,8 +150,14 @@ export default function Home() {
                 
                 {/* Featured text - blissful growth */}
                 <div className="relative py-8 mb-8 backdrop-blur-sm">
-                  {/* Simple background with gradient border */}
-                  <div className="absolute inset-0 bg-deepSpace/30 border border-psychedelicPurple/20 rounded-xl"></div>
+                  {/* Neon glowing background */}
+                  <div className="absolute inset-0 rounded-xl" 
+                    style={{
+                      background: 'rgba(10,2,15,0.4)',
+                      boxShadow: '0 0 15px var(--psychedelic-magenta), inset 0 0 10px var(--psychedelic-purple)',
+                      border: '1px solid rgba(226,51,255,0.5)'
+                    }}>
+                  </div>
                   
                   {/* Static glowing text */}
                   <div className="flex justify-center items-center">
@@ -215,23 +221,23 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.3 }}
               className="relative hidden lg:block"
             >
-              <div className="rounded-full overflow-hidden max-w-sm mx-auto relative p-2">
-                {/* Static logo container with subtle animation */}
-                <div className="relative h-80 w-80 mx-auto rounded-full bg-gradient-to-b from-black to-purple-900/30 border border-purple-500/30 backdrop-blur-sm p-4">
+              <div className="rounded-full overflow-visible max-w-lg mx-auto relative p-8">
+                {/* Static logo container with subtle animation - increased size */}
+                <div className="relative h-96 w-96 mx-auto rounded-full bg-gradient-to-b from-black to-purple-900/30 border border-purple-500/30 backdrop-blur-sm p-6">
                   {/* Ambient glow */}
                   <div className="absolute inset-0 rounded-full blur-xl bg-gradient-radial from-pink-600/20 via-purple-500/10 to-transparent"></div>
                   
                   {/* Logo display with Saturn rings effect - conditionally rendered for mobile */}
                   <div className="relative h-full w-full flex items-center justify-center">
-                    {/* Saturn rings effect - hidden on mobile for performance */}
-                    <div className="absolute z-5 w-[350px] h-[350px] rounded-full hidden md:block">
+                    {/* Saturn rings effect - hidden on mobile for performance - increased size */}
+                    <div className="absolute z-5 w-[450px] h-[450px] rounded-full hidden md:block" style={{left: '-75px', top: '-75px'}}>
                       {/* Outer glow ring */}
                       <div
                         className="absolute inset-0 rounded-full saturn-outer-ring"
                         style={{
-                          background: 'conic-gradient(from 0deg, #FF00FF20, #9D00FF30, #00FFFF30, #FF00FF20)',
-                          filter: 'blur(10px)',
-                          opacity: 0.8
+                          background: 'conic-gradient(from 0deg, #FF00FF30, #9D00FF40, #00FFFF40, #FF00FF30)',
+                          filter: 'blur(12px)',
+                          opacity: 0.9
                         }}
                       />
                       
@@ -239,8 +245,8 @@ export default function Home() {
                       <div 
                         className="absolute inset-0 rounded-full saturn-inner-ring"
                         style={{
-                          background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF10 3px, #FFFFFF08 4px), linear-gradient(135deg, #FF00FF30, #9D00FF50, #00FFFF30)',
-                          boxShadow: '0 0 20px 2px rgba(255, 0, 255, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.3)'
+                          background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF15 3px, #FFFFFF10 4px), linear-gradient(135deg, #FF00FF40, #9D00FF60, #00FFFF40)',
+                          boxShadow: '0 0 30px 4px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 0, 255, 0.4)'
                         }}
                       />
                     </div>
@@ -248,19 +254,19 @@ export default function Home() {
                     {/* Simple glow effect for mobile only */}
                     <div className="absolute inset-0 rounded-full bg-gradient-radial from-purple-500/20 to-transparent block md:hidden"></div>
                     
-                    {/* Logo with white background and enhanced shine effect */}
-                    <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg">
+                    {/* Logo with white background and enhanced shine effect - size increased */}
+                    <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg" style={{width: '240px', height: '240px'}}>
                       <img 
                         src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png?fit=1080%2C901&ssl=1"
                         alt="Lenny Universe Logo"
-                        width={220}
-                        height={220}
+                        width={240}
+                        height={240}
                         className="relative z-10"
                       />
                       
                       {/* Inner glow for the logo */}
                       <div className="absolute inset-0 rounded-full" style={{
-                        boxShadow: 'inset 0 0 20px rgba(157, 0, 255, 0.3)',
+                        boxShadow: 'inset 0 0 30px rgba(157, 0, 255, 0.4), inset 0 0 10px rgba(255, 0, 255, 0.3)',
                         filter: 'blur(2px)'
                       }}></div>
                     </div>
