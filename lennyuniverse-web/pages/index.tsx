@@ -40,12 +40,37 @@ import { useInView } from 'react-intersection-observer';
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
   
   const y = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  
+  // Star swirl effect on scroll
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      
+      // Calculate x offset based on scroll direction and speed
+      // Slower x movement makes the stars feel more natural
+      const xOffset = scrollDelta * 0.05;
+      
+      // Update offsets for the stars to react to
+      setScrollOffset(prev => ({
+        x: prev.x + xOffset,
+        y: currentScrollY * 0.03 // Gentle vertical offset
+      }));
+      
+      lastScrollY = currentScrollY;
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // Setup intersection observer hooks for animations
   const [featureRef1, featureInView1] = useInView({
@@ -97,25 +122,32 @@ export default function Home() {
         colors={['#E233FF', '#8B31FF', '#00D1D1', '#3F7DFF', '#5C14E8', '#9345FF']}
       />
       
-      {/* New Space-Themed Hero Section With Twinkling Stars */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
-        {/* Deep space background - static gradient for performance - moved to lower z-index */}
-        <div 
-          className="absolute inset-0 overflow-hidden"
-          style={{ 
-            background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
-            zIndex: -20
-          }}
-        />
+      {/* Unified Cosmic Background for entire page */}
+      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -20 }}>
+        <div className="absolute inset-0" style={{ 
+          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)'
+        }}/>
         
-        {/* Optimized starfield with fewer stars for better performance - set higher z-index */}
-        <div className="absolute inset-0" style={{ zIndex: 1 }}>
+        {/* Global starfield that moves with scroll */}
+        <motion.div 
+          className="absolute inset-0" 
+          style={{ zIndex: 1 }}
+          animate={{ 
+            x: scrollOffset.x,
+            y: scrollOffset.y 
+          }}
+          transition={{ type: "tween", ease: "linear" }}
+        >
           <StarfieldBackground
-            starCount={150}
+            starCount={200}
             opacity={1}
             withNebulas={true}
           />
-        </div>
+        </motion.div>
+      </div>
+      
+      {/* New Space-Themed Hero Section With Twinkling Stars */}
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
         
         {/* Reduced nebula explosions for better performance */}
         <NebulaExplosion 
@@ -282,16 +314,35 @@ export default function Home() {
         </div>
       </section>
       
+      {/* Cosmic divider between sections */}
+      <div className="cosmic-divider">
+        <motion.div
+          animate={{
+            opacity: [0.3, 0.7, 0.3],
+            scale: [0.95, 1.05, 0.95]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{
+            position: "absolute",
+            top: "50%", 
+            left: "50%", 
+            width: "80%", 
+            height: "2px",
+            translateX: "-50%",
+            translateY: "-50%",
+            background: "linear-gradient(90deg, transparent, var(--psychedelic-purple), var(--psychedelic-teal), var(--psychedelic-purple), transparent)",
+            filter: "blur(2px)",
+            zIndex: 7
+          }}
+        />
+      </div>
+      
       {/* Community Section */}
       <section className="py-24 relative overflow-hidden">
-        {/* Add stars to background */}
-        <div className="absolute inset-0" style={{ zIndex: 1 }}>
-          <StarfieldBackground
-            starCount={120}
-            opacity={0.8}
-            withNebulas={true}
-          />
-        </div>
         <PsychedelicBackground variant="grid" intensity={0.7} primaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <motion.div 
@@ -450,16 +501,35 @@ export default function Home() {
         </PsychedelicBackground>
       </section>
       
+      {/* Cosmic divider between sections - different color scheme */}
+      <div className="cosmic-divider">
+        <motion.div
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.97, 1.03, 0.97]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{
+            position: "absolute",
+            top: "50%", 
+            left: "50%", 
+            width: "85%", 
+            height: "2px",
+            translateX: "-50%",
+            translateY: "-50%",
+            background: "linear-gradient(90deg, transparent, var(--psychedelic-teal), var(--psychedelic-magenta), var(--psychedelic-teal), transparent)",
+            filter: "blur(3px)",
+            zIndex: 7
+          }}
+        />
+      </div>
+      
       {/* Meet Lenny Section */}
       <section className="py-24 relative overflow-hidden" ref={meetLennyRef}>
-        {/* Add stars to background */}
-        <div className="absolute inset-0" style={{ zIndex: 1 }}>
-          <StarfieldBackground
-            starCount={120}
-            opacity={0.8}
-            withNebulas={true}
-          />
-        </div>
         <PsychedelicBackground variant="waves" intensity={0.8} primaryColor="#FF00FF" secondaryColor="#9D00FF">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -572,18 +642,37 @@ export default function Home() {
         </PsychedelicBackground>
       </section>
       
+      {/* Cosmic divider between sections - third variation */}
+      <div className="cosmic-divider">
+        <motion.div
+          animate={{
+            opacity: [0.2, 0.6, 0.2],
+            scale: [0.98, 1.02, 0.98]
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{
+            position: "absolute",
+            top: "50%", 
+            left: "50%", 
+            width: "90%", 
+            height: "3px",
+            translateX: "-50%",
+            translateY: "-50%",
+            background: "linear-gradient(90deg, transparent, var(--psychedelic-indigo), var(--psychedelic-gold), var(--psychedelic-indigo), transparent)",
+            filter: "blur(4px)",
+            boxShadow: "0 0 20px rgba(226, 51, 255, 0.3)",
+            zIndex: 7
+          }}
+        />
+      </div>
+      
       {/* CTA Section */}
       <section className="py-24 relative" ref={ctaRef}>
         <div className="absolute inset-0 bg-gradient-to-b from-deepSpace/40 to-deepSpace/90 z-0" />
-        
-        {/* Static starfield background */}
-        <div className="absolute inset-0" style={{ zIndex: 1, opacity: 0.7 }}>
-          <StarfieldBackground
-            starCount={120}
-            opacity={0.9}
-            withNebulas={true}
-          />
-        </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div

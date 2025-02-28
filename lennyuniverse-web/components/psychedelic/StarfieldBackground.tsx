@@ -48,18 +48,20 @@ const StarfieldBackground = memo(({
     return { x, y, size, color, delay, duration, blurAmount };
   });
   
-  // Reduced number of nebulas and simplified for better performance
-  const nebulas = withNebulas ? Array.from({ length: 3 }).map((_, i) => {
-    // Fixed positions for more controlled performance
+  // Increased number of nebulas for a more immersive space effect
+  const nebulas = withNebulas ? Array.from({ length: 5 }).map((_, i) => {
+    // More distributed positions across the screen
     const positions = [
-      { x: 25, y: 30 },
-      { x: 70, y: 20 },
-      { x: 50, y: 70 }
+      { x: 15, y: 25 },
+      { x: 65, y: 15 },
+      { x: 40, y: 60 },
+      { x: 80, y: 75 },
+      { x: 30, y: 85 }
     ];
     const { x, y } = positions[i];
     
-    // Fixed sizes for better performance prediction
-    const sizes = [35, 45, 40];
+    // Varied sizes for better visual distribution
+    const sizes = [30, 40, 35, 45, 38];
     const size = sizes[i];
     
     // Refined psychedelic color schemes for nebulas
