@@ -11,10 +11,14 @@ module.exports = {
         neonPurple: "#9D00FF",
         neonTeal: "#00FFFF",
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       animation: {
         glow: "glow 2s ease-in-out infinite alternate",
         float: "float 6s ease-in-out infinite",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        'pulse-slow': 'pulse-slow 8s infinite ease-in-out',
       },
       keyframes: {
         glow: {

@@ -65,14 +65,17 @@ const HypercubeScene = ({
         left: 0,
         zIndex: 0,
       }}
-      dpr={[0.5, 0.8]} // Very low resolution for better performance
+      dpr={0.5} // Fixed low resolution for Vercel's 1.7 vCPU
       frameloop="demand" // Only render when needed
-      performance={{ min: 0.1 }}
+      gl={{ 
+        powerPreference: 'low-power', // Request low power mode from GPU
+        antialias: false // Disable antialiasing for performance
+      }}
     >
       <color attach="background" args={['#000000']} />
       <ambientLight intensity={0.2} />
       
-      {/* Just a single static cube for absolute minimal performance impact */}
+      {/* Cube optimized for Vercel 1.7 vCPU environment */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1.5, 1.5, 1.5]} />
         <meshBasicMaterial color={color} transparent opacity={intensity} />

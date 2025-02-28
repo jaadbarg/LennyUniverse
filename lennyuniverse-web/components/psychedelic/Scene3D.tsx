@@ -44,15 +44,18 @@ const Scene3D = ({ colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }: Scene3DProps) =
     <div className="w-full h-full">
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 75 }}
-        dpr={[0.5, 0.8]} // Very low resolution for better performance
+        dpr={0.5} // Fixed low resolution for Vercel's 1.7 vCPU
         frameloop="demand" // Only render when needed
-        performance={{ min: 0.1 }} // Allow lower frame rates
+        gl={{ 
+          powerPreference: 'low-power', // Request low power mode from GPU
+          antialias: false // Disable antialiasing for performance
+        }}
       >
         <ambientLight intensity={0.3} />
         
-        {/* Just a single static sphere for absolute minimal performance impact */}
+        {/* Ultra low-poly sphere for Vercel 1.7 vCPU */}
         <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1.2, 8, 8]} /> {/* Lower polygon count */}
+          <sphereGeometry args={[1.2, 6, 6]} /> {/* Absolute minimum polygon count */}
           <meshBasicMaterial color={color} transparent opacity={0.5} />
         </mesh>
         

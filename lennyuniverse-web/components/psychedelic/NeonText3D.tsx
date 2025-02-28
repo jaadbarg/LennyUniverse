@@ -106,31 +106,51 @@ const TextMesh = ({ text, color = '#FF00FF', floatIntensity = 1, speed = 1 }: Ne
     const letters = [];
     const letterSpacing = 0.4;
     
-    // Use input text to determine how many particles to create
-    // This ensures the "blissful growth" text is fully represented
-    const particleCount = Math.max(text.length * 20, 50);
+    // BEEFED UP: Use significantly more particles for "blissful growth"
+    const particleCount = Math.max(text.length * 40, 100);
     
+    // Create text outline shape
+    // Calculate text width based on character count
+    const textWidth = text.length * 0.5;
+    const textShape = [];
+    
+    // Create a cloud of particles that roughly follows the text shape
+    // Generate particles in a more text-like pattern
     for (let i = 0; i < particleCount; i++) {
-      // Create particles in a pattern that better resembles text
-      // Distribute particles more horizontally to form a text-like shape
       const letterIndex = i % text.length;
-      const horizontalPosition = (letterIndex / text.length) * 6 - 3; // Spread across horizontal space
+      // Map letter position to x-coordinate (spread across space)
+      const baseX = (letterIndex / text.length) * textWidth - (textWidth / 2);
       
-      const x = horizontalPosition + (Math.random() - 0.5) * 0.8; // Add some randomness but keep general position
-      const y = (Math.random() - 0.5) * 1.2; // Less vertical spread
-      const z = (Math.random() - 0.5) * 1;
+      // Make a more text-like vertical distribution by using sine wave for baseline
+      // This creates a wavy text effect
+      const letterPosition = letterIndex / text.length;
+      const baseY = Math.sin(letterPosition * Math.PI * 2) * 0.2;
       
-      // Random color from our neon palette, but more consistently related to the text
-      const colorChoice = (letterIndex + Math.floor(Math.random() * 2)) % 3; // Make colors more consistent for nearby particles
-      const particleColor = colorChoice === 0 ? '#FF00FF' : colorChoice === 1 ? '#9D00FF' : '#00FFFF';
+      // Add controlled randomness to create a psychedelic cloud-like effect around the text shape
+      const x = baseX + (Math.random() - 0.5) * 0.4;
+      const y = baseY + (Math.random() - 0.5) * 0.6;
+      const z = (Math.random() - 0.5) * 1.5; // Deeper 3D effect
       
-      // Larger particles to ensure text is more visible
-      const particleSize = 0.08 + Math.random() * 0.12;
+      // More vibrant color palette with more magenta/pink for "blissful growth"
+      const colorOptions = ['#FF00FF', '#FF00FF', '#9D00FF', '#00FFFF', '#FF40FF'];
+      const particleColor = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+      
+      // Varied particle sizes with some larger ones for visual impact
+      const particleSize = 0.1 + Math.random() * 0.18;
+      
+      // Higher emissive intensity for more glow
+      const emissiveIntensity = 3 + Math.random() * 2;
       
       letters.push(
         <mesh key={`particle-${i}`} position={[x, y, z]}>
-          <sphereGeometry args={[particleSize, 16, 16]} />
-          <meshStandardMaterial color={particleColor} emissive={particleColor} emissiveIntensity={2.5 + Math.random()} />
+          <sphereGeometry args={[particleSize, 12, 12]} />
+          <meshStandardMaterial 
+            color={particleColor} 
+            emissive={particleColor} 
+            emissiveIntensity={emissiveIntensity} 
+            transparent 
+            opacity={0.8 + Math.random() * 0.2}
+          />
         </mesh>
       );
     }
@@ -141,13 +161,19 @@ const TextMesh = ({ text, color = '#FF00FF', floatIntensity = 1, speed = 1 }: Ne
   return (
     <Float 
       floatIntensity={floatIntensity} 
-      rotationIntensity={0.5} 
-      speed={2}
+      rotationIntensity={0.6} 
+      speed={2.5}
     >
       <group ref={groupRef}>
         {renderText()}
-        {/* Add a point light to make everything glow */}
-        <pointLight position={[0, 0, 2]} intensity={2} color={color} />
+        {/* Enhanced lighting - multiple lights for more dramatic effect */}
+        <pointLight position={[0, 0, 2.5]} intensity={3} color={color} />
+        <pointLight position={[2, 0, 1.5]} intensity={1.5} color="#FF40FF" />
+        <pointLight position={[-2, 0, 1.5]} intensity={1.5} color="#9D00FF" />
+        <pointLight position={[0, 1, 1]} intensity={2} color="#FFFFFF" />
+        
+        {/* Add subtle ambient light */}
+        <ambientLight intensity={0.3} />
       </group>
     </Float>
   );
@@ -202,17 +228,30 @@ const NeonText3D = ({
         {text}
       </div>
       
-      {/* 3D Canvas that will render on top of the fallback */}
+      {/* Enhanced 3D Canvas with improved settings */}
       <div className="absolute inset-0 z-10">
-        <Canvas>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
+        <Canvas
+          camera={{ 
+            position: [0, 0, 6], 
+            fov: 60,
+          }}
+          dpr={[1, 2]} // Higher quality for important text
+          performance={{ min: 0.5 }}
+          gl={{ 
+            antialias: true,
+            alpha: true,
+          }}
+        >
+          {/* We've removed these since we have better lighting inside the TextMesh component */}
           <TextMesh 
             text={text} 
             color={color} 
             floatIntensity={floatIntensity} 
             speed={speed} 
           />
+          
+          {/* Add subtle fog for depth */}
+          <fog attach="fog" args={['#000', 5, 15]} />
         </Canvas>
       </div>
     </motion.div>

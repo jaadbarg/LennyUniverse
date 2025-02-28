@@ -1,5 +1,61 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
-  "framework": "nextjs"
+  "trailingSlash": true,
+  "framework": "nextjs",
+  
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    },
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  
+  "functions": {
+    "api/*": {
+      "memory": 1024, // Allocate only 1GB to API functions
+      "maxDuration": 10 // Cap at 10 seconds for API functions
+    }
+  },
+  
+  "build": {
+    "env": {
+      "NEXT_OPTIMIZE_FONTS": "true",
+      "NEXT_OPTIMIZE_IMAGES": "true"
+    }
+  }
 }

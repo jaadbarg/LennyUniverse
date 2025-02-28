@@ -8,14 +8,25 @@ import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
 
 // Low-performance mode detection
+// Vercel function has 1.7 vCPU and 3GB memory
+// This is a more precise performance detector for our specific deployment
 const isLowPerformanceDevice = () => {
   // Check for mobile devices
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     typeof navigator !== 'undefined' ? navigator.userAgent : ''
   );
   
-  // Just use mobile detection as a simple performance indicator
-  return isMobile;
+  // Check for low-end devices via rough CPU core estimate (Safari doesn't support hardwareConcurrency)
+  const isLowCPU = typeof navigator !== 'undefined' && 
+                  typeof (navigator as any).hardwareConcurrency !== 'undefined' && 
+                  (navigator as any).hardwareConcurrency < 4;
+  
+  // Check if device has poor GPU (indirectly via user agent)
+  const isPoorGPU = typeof navigator !== 'undefined' && 
+                    /(low|mid)/.test(navigator.userAgent.toLowerCase());
+  
+  // Optimize for Vercel's 1.7 vCPU - consider everything except high-end desktop as "low performance"
+  return isMobile || isLowCPU || isPoorGPU;
 };
 
 interface PsychedelicLayoutProps {

@@ -32,27 +32,42 @@ const LoadingScreen = ({
   ];
 
   useEffect(() => {
-    // Simplified loading sequence with shorter duration
+    // Ultra-optimized loading sequence for Vercel 1.7 vCPU
     const loadingTimer = setTimeout(() => {
-      // Skip particle explosion for performance
+      // Skip particle explosion completely for Vercel performance
       setParticlesExploded(false);
       
-      // Simplified animation sequence
-      logoControls.start({
-        scale: 1.5,
-        filter: 'drop-shadow(0 0 20px #FF00FF)',
-        transition: { duration: 0.7, ease: "easeInOut" }
-      }).then(() => {
-        // Fade out immediately
-        controls.start({
-          opacity: 0,
-          transition: { duration: 0.3 }
+      // Split the animation into two parts with a delay between
+      // This spreads CPU usage over time instead of concentrating it
+      setTimeout(() => {
+        // First just scale the logo - minimal CPU usage
+        logoControls.start({
+          scale: 1.3,
+          transition: { duration: 0.4, ease: "linear" }
         }).then(() => {
-          setIsLoading(false);
-          if (onLoadingComplete) onLoadingComplete();
+          // Short delay to let CPU recover
+          setTimeout(() => {
+            // Then add the glow effect
+            logoControls.start({
+              filter: 'drop-shadow(0 0 15px #FF00FF)',
+              transition: { duration: 0.3, ease: "linear" }
+            }).then(() => {
+              // Another short delay before fade-out
+              setTimeout(() => {
+                // Simple fade out - very lightweight
+                controls.start({
+                  opacity: 0,
+                  transition: { duration: 0.2, ease: "linear" }
+                }).then(() => {
+                  setIsLoading(false);
+                  if (onLoadingComplete) onLoadingComplete();
+                });
+              }, 100);
+            });
+          }, 100);
         });
-      });
-    }, Math.min(1500, minDuration)); // Maximum 1.5 seconds loading time
+      }, 100);
+    }, Math.min(1000, minDuration)); // Just 1 second for initial loading - helps with 1.7 vCPU
 
     return () => clearTimeout(loadingTimer);
   }, [onLoadingComplete, minDuration, controls, logoControls]);

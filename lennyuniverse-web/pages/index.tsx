@@ -144,39 +144,84 @@ export default function Home() {
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative z-10"
             >
-              <div className="text-4xl md:text-6xl font-bold mb-6 text-white">
-                <h1 className="block mb-2 neon-text-enhanced">Your journey of</h1>
-                <div className="relative flex flex-col items-center justify-center w-full">
-                  <NeonText3D 
-                    text="blissful growth" 
-                    className="h-24 md:h-32 w-full -mt-4 mb-4"
-                    color="#9D00FF"
-                    floatIntensity={2}
-                    speed={1.5}
-                  />
+              {/* BEEFED UP Title Section with Enhanced Effects */}
+              <div className="relative z-30">
+                <div className="text-5xl md:text-7xl font-bold mb-10 text-white relative">
+                  {/* Psychedelic glow effect behind text */}
+                  <div className="absolute inset-0 blur-3xl rounded-full bg-gradient-radial from-purple-600/30 via-pink-500/20 to-transparent z-0 animate-pulse-slow"></div>
+                  
+                  {/* Main Title with Enhanced Neon Effect */}
+                  <h1 className="block mb-4 neon-text-enhanced text-center md:text-left relative z-10">
+                    Your journey of
+                  </h1>
+                  
+                  {/* Enhanced Container for Blissful Growth with Backdrop */}
+                  <div className="relative flex flex-col items-center justify-center w-full mt-4 mb-6">
+                    {/* Background Aura for the 3D Text */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 via-pink-800/30 to-fuchsia-900/40 rounded-xl blur-lg transform scale-110 z-0"></div>
+                    
+                    {/* Larger and More Impressive 3D Text */}
+                    <NeonText3D 
+                      text="blissful growth" 
+                      className="h-32 md:h-48 w-full mb-6 z-20"
+                      color="#FF00FF" 
+                      floatIntensity={3}
+                      speed={1.2}
+                    />
+                    
+                    {/* Light Rays Effect */}
+                    <div className="absolute w-full h-full z-10 overflow-hidden opacity-70">
+                      <div className="absolute top-1/2 left-1/2 w-[140%] h-[140%] -translate-x-1/2 -translate-y-1/2 ray-rotate">
+                        <div className="w-full h-full bg-[conic-gradient(from_0deg,transparent,#FF00FF40_10deg,transparent_15deg,transparent_30deg,#9D00FF40_40deg,transparent_45deg)]"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              
+                {/* Enhanced Paragraph with Gradient Border */}
+                <motion.div 
+                  className="relative z-20 p-6 rounded-xl backdrop-blur-sm border border-purple-500/30 bg-black/30"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-pink-900/5 rounded-xl z-0"></div>
+                  <p className="text-xl md:text-3xl font-medium text-white/90 text-center md:text-left relative z-10">
+                    Discover your path to personal growth and creative expansion. 
+                    <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">
+                      Join our mindful community where imagination and awareness blend to reveal your true potential.
+                    </span>
+                  </p>
+                </motion.div>
               </div>
-              <motion.p 
-                className="text-xl md:text-2xl mb-8 text-gray-300"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8, duration: 1 }}
-              >
-                Discover your path to personal growth and creative expansion. Join our mindful community where imagination and awareness blend to reveal your true potential.
-              </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
+                className="mt-8 relative z-20"
               >
-                <NeonButton 
-                  href="/contact" 
-                  color="pink"
-                  size="lg"
-                  variant="flux"
-                >
-                  Join Our Community
-                </NeonButton>
+                {/* Glowing aura around button */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-pink-600/30 via-purple-600/20 to-blue-600/30 rounded-full blur-xl animate-pulse-slow"></div>
+                
+                {/* Enhanced button with additional effects */}
+                <div className="relative">
+                  <NeonButton 
+                    href="/contact" 
+                    color="pink"
+                    size="lg"
+                    variant="flux"
+                    className="relative z-10 px-12 py-5 text-xl font-bold tracking-wider shadow-lg"
+                  >
+                    <span className="relative inline-flex items-center">
+                      <span className="mr-2">✨</span>
+                      Join Our Community
+                      <span className="ml-2 animate-pulse">✨</span>
+                    </span>
+                  </NeonButton>
+                  
+                  {/* Subtle animated border */}
+                  <div className="absolute -inset-[3px] rounded-xl border border-purple-500/50 z-0 animate-pulse-slow"></div>
+                </div>
               </motion.div>
             </motion.div>
             
