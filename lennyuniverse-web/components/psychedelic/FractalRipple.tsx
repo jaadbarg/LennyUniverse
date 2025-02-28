@@ -20,19 +20,31 @@ const FractalRipple = memo(({
   duration = 1.2,
   iterationCount = 4
 }: FractalRippleProps) => {
+  // Check if we're on a mobile device
+  const isMobile = typeof window !== 'undefined' && 
+    (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+    window.innerWidth < 768);
+  
+  // Reduce complexity on mobile
+  const effectiveIterationCount = isMobile ? Math.min(3, iterationCount) : iterationCount;
+  
   // Generate multiple ripple rings with different properties
-  const ripples = Array.from({ length: iterationCount }).map((_, i) => {
-    // Calculate parameters for this ripple
+  const ripples = Array.from({ length: effectiveIterationCount }).map((_, i) => {
+    // Calculate parameters for this ripple - simpler on mobile
     const delay = i * 0.1;
-    const sizeFactor = 1 - (i / (iterationCount * 2));
-    const opacity = 0.8 - (i / iterationCount) * 0.5;
+    const sizeFactor = 1 - (i / (effectiveIterationCount * 2));
+    const opacity = 0.7 - (i / effectiveIterationCount) * 0.4;
     
     // Calculate fibonacci-based parameters for natural appearance
-    const fibonacci = (n: number): number => n <= 1 ? n : fibonacci(n-1) + fibonacci(n-2);
-    const fibValue = fibonacci(i % 6); // Keep value manageable
+    // On mobile, use simpler math to avoid complex calculations
+    let fibValue = 1;
+    if (!isMobile) {
+      const fibonacci = (n: number): number => n <= 1 ? n : fibonacci(n-1) + fibonacci(n-2);
+      fibValue = fibonacci(i % 4); // Reduced complexity, keep value manageable
+    }
     
     // Create gradient stops for fractal-like appearance
-    const gradientAngle = (360 / iterationCount) * i;
+    const gradientAngle = (360 / effectiveIterationCount) * i;
     
     return (
       <motion.div

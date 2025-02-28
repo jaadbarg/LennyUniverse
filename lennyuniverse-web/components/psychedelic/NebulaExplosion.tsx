@@ -61,12 +61,24 @@ const NebulaExplosion = memo(({
     // Only create explosions occasionally with more predictable timing
     // Fixed interval with no randomness for more stable performance 
     const timer = setInterval(() => {
-      // Only if we have capacity and not on low-end devices
+      // Skip explosions entirely on mobile or low-end devices to save resources
       if (explosions.length < maxActive && 
-          // Performance detection - skip on slower devices
-          typeof window !== 'undefined' && 
-          window.innerWidth > 768) {
-        createExplosion();
+          // Performance detection - more comprehensive check
+          typeof window !== 'undefined') {
+            
+        // Detect mobile devices
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                            window.innerWidth < 768;
+                            
+        // Check for CPU/memory limitations
+        const isLowEndCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+        // @ts-ignore - deviceMemory is not in all TypeScript definitions yet
+        const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+        
+        // Only create explosion on capable devices
+        if (!isMobile && !isLowEndCPU && !isLowMemory) {
+          createExplosion();
+        }
       }
     }, interval + 2000); // Longer interval for better performance
     

@@ -221,10 +221,10 @@ export default function Home() {
                   {/* Ambient glow */}
                   <div className="absolute inset-0 rounded-full blur-xl bg-gradient-radial from-pink-600/20 via-purple-500/10 to-transparent"></div>
                   
-                  {/* Logo display with Saturn rings effect */}
+                  {/* Logo display with Saturn rings effect - conditionally rendered for mobile */}
                   <div className="relative h-full w-full flex items-center justify-center">
-                    {/* Saturn rings effect */}
-                    <div className="absolute z-5 w-[350px] h-[350px] rounded-full">
+                    {/* Saturn rings effect - hidden on mobile for performance */}
+                    <div className="absolute z-5 w-[350px] h-[350px] rounded-full hidden md:block">
                       {/* Outer glow ring */}
                       <div
                         className="absolute inset-0 rounded-full saturn-outer-ring"
@@ -244,6 +244,9 @@ export default function Home() {
                         }}
                       />
                     </div>
+                    
+                    {/* Simple glow effect for mobile only */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-radial from-purple-500/20 to-transparent block md:hidden"></div>
                     
                     {/* Logo with white background and enhanced shine effect */}
                     <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg">

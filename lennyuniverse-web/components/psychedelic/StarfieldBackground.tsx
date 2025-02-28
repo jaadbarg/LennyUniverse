@@ -96,7 +96,15 @@ const StarfieldBackground = memo(({
       {[0, 1, 2].map(batch => (
         <div key={`batch-${batch}`} className={`absolute inset-0 batch-${batch}`}>
           {stars
-            .filter((_, i) => i % 3 === batch) // Split into 3 batches to reduce paint operations
+            .filter((_, i) => {
+              // On mobile, render even fewer stars for performance
+              const isMobile = typeof window !== 'undefined' && 
+                (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                window.innerWidth < 768);
+                
+              // On mobile, only render 1/5 of stars (batch 0 only gets rendered)
+              return isMobile ? (batch === 0 && i % 5 === 0) : (i % 3 === batch);
+            }) // Split into batches to reduce paint operations
             .map((star, i) => (
               <div
                 key={i}

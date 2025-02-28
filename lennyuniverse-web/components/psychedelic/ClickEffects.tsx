@@ -85,13 +85,25 @@ const ClickEffects = memo(({
       // Skip if throttled or too many effects already
       if (throttled || effects.length >= maxEffects) return;
       
-      // Check device capability - skip on mobile or low-end devices
+      // More robust device capability detection
       if (typeof window !== 'undefined') {
-        const isMobile = window.innerWidth < 768;
-        const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-        if (isMobile || isLowEnd) {
-          // On low-end devices, only show effects occasionally
-          if (Math.random() < 0.7) return;
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                          window.innerWidth < 768;
+        
+        // Check for CPU cores - lower-end devices have fewer cores
+        const isLowEndCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+        
+        // Check for RAM if available (some browsers support this)
+        // @ts-ignore - deviceMemory is not in all TypeScript definitions yet
+        const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+        
+        // Mobile or low-end device optimization
+        if (isMobile || isLowEndCPU || isLowMemory) {
+          // On mobile/low-end devices, significantly reduce effects frequency
+          if (Math.random() < 0.85) return; // 85% chance to skip effect
+          
+          // Shorten effect duration for mobile
+          effectDuration = Math.min(effectDuration, 1200);
         }
       }
       
