@@ -122,29 +122,20 @@ export default function Home() {
         colors={['#E233FF', '#8B31FF', '#00D1D1', '#3F7DFF', '#5C14E8', '#9345FF']}
       />
       
-      {/* Unified Cosmic Background for entire page */}
-      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
+      {/* Global background that covers the entire page */}
+      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -50 }}>
         <div className="absolute inset-0" style={{ 
-          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
-          zIndex: 1
+          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)'
         }}/>
-        
-        {/* Global starfield that moves with scroll */}
-        <motion.div 
-          className="absolute inset-0" 
-          style={{ zIndex: 2 }}
-          animate={{ 
-            x: scrollOffset.x,
-            y: scrollOffset.y 
-          }}
-          transition={{ type: "tween", ease: "linear" }}
-        >
-          <StarfieldBackground
-            starCount={200}
-            opacity={1}
-            withNebulas={true}
-          />
-        </motion.div>
+      </div>
+      
+      {/* Fixed starfield background */}
+      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -30 }}>
+        <StarfieldBackground
+          starCount={200}
+          opacity={1}
+          withNebulas={true}
+        />
       </div>
       
       {/* New Space-Themed Hero Section With Twinkling Stars */}
@@ -264,8 +255,8 @@ export default function Home() {
                   
                   {/* Logo display with Saturn rings effect - conditionally rendered for mobile */}
                   <div className="relative h-full w-full flex items-center justify-center">
-                    {/* Saturn rings effect - hidden on mobile for performance - increased size */}
-                    <div className="absolute z-5 w-[450px] h-[450px] rounded-full hidden md:block" style={{left: '-75px', top: '-75px'}}>
+                    {/* Saturn rings effect - hidden on mobile for performance - increased size with improved positioning */}
+                    <div className="absolute w-[500px] h-[500px] rounded-full hidden md:block" style={{left: '-100px', top: '-100px', zIndex: -1}}>
                       {/* Outer glow ring */}
                       <div
                         className="absolute inset-0 rounded-full saturn-outer-ring"
@@ -337,7 +328,7 @@ export default function Home() {
             translateY: "-50%",
             background: "linear-gradient(90deg, transparent, var(--psychedelic-purple), var(--psychedelic-teal), var(--psychedelic-purple), transparent)",
             filter: "blur(2px)",
-            zIndex: 17
+            zIndex: 7
           }}
         />
       </div>
@@ -524,7 +515,7 @@ export default function Home() {
             translateY: "-50%",
             background: "linear-gradient(90deg, transparent, var(--psychedelic-teal), var(--psychedelic-magenta), var(--psychedelic-teal), transparent)",
             filter: "blur(3px)",
-            zIndex: 17
+            zIndex: 7
           }}
         />
       </div>
@@ -666,7 +657,7 @@ export default function Home() {
             background: "linear-gradient(90deg, transparent, var(--psychedelic-indigo), var(--psychedelic-gold), var(--psychedelic-indigo), transparent)",
             filter: "blur(4px)",
             boxShadow: "0 0 20px rgba(226, 51, 255, 0.3)",
-            zIndex: 17
+            zIndex: 7
           }}
         />
       </div>

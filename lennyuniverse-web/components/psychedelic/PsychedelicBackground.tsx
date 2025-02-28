@@ -170,7 +170,7 @@ const PsychedelicBackground = ({
   };
   
   return (
-    <div ref={containerRef} className={`relative z-20 ${className}`}>
+    <div ref={containerRef} className={`relative z-10 ${className}`}>
       {renderBackground()}
       {children}
     </div>
