@@ -31,61 +31,61 @@ const ParticleBackground = () => {
               value: "#0c0c0c",
             },
           },
-          fpsLimit: 30, // Reduced from 120 to 30
+          fpsLimit: 15, // Ultra-low FPS for minimal CPU usage
           particles: {
             color: {
-              value: ["#FF00FF", "#9D00FF", "#00FFFF"],
+              value: ["#FF00FF"],
             },
             links: {
               color: "#FF00FF",
               distance: 150,
-              enable: true,
-              opacity: 0.2,
+              enable: false, // Disable connections completely
+              opacity: 0.1,
               width: 1,
             },
             collisions: {
-              enable: false, // Disabled for performance
+              enable: false,
             },
             move: {
               direction: "none",
               enable: true,
               outMode: "out",
               random: false,
-              speed: 0.5, // Reduced from 1 to 0.5
-              straight: false,
+              speed: 0.2, // Extremely slow movement
+              straight: true, // Simplify motion calculations
               attract: {
-                enable: false, // Disabled for performance
-                rotateX: 600,
-                rotateY: 1200,
+                enable: false,
+                rotateX: 0,
+                rotateY: 0,
               },
             },
             number: {
               density: {
                 enable: true,
-                area: 1200, // Increased area = fewer particles
+                area: 2500, // Much higher area = far fewer particles
               },
-              value: 30, // Reduced from 80 to 30
+              value: 10, // Absolute minimum particles
             },
             opacity: {
-              value: 0.5,
-              random: true,
+              value: 0.3,
+              random: false, // No randomization
               anim: {
-                enable: false, // Disabled for performance
-                speed: 1,
-                opacity_min: 0.1,
+                enable: false,
+                speed: 0,
+                opacity_min: 0.3,
                 sync: false,
               },
             },
             shape: {
-              type: ["circle"], // Simplified to just circles
+              type: ["circle"],
             },
             size: {
-              value: { min: 1, max: 3 }, // Smaller particles
-              random: true,
+              value: { min: 1, max: 2 }, // Even smaller particles
+              random: false, // No randomization
               anim: {
-                enable: false, // Disabled for performance
-                speed: 2,
-                size_min: 0.1,
+                enable: false,
+                speed: 0,
+                size_min: 1,
                 sync: false,
               },
             },

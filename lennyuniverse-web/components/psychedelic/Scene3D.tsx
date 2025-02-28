@@ -36,50 +36,27 @@ interface Scene3DProps {
   colors?: string[];
 }
 
-// Main Scene3D component with spheres already included
-const Scene3D = ({ count = 3, colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }: Scene3DProps) => {
-  // Pre-calculate sphere positions for performance
-  const sphereData = useMemo(() => {
-    return Array.from({ length: count }).map(() => ({
-      position: [
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 4
-      ] as [number, number, number],
-      size: 0.5 + Math.random() * 0.5,
-      color: colors[Math.floor(Math.random() * colors.length)]
-    }));
-  }, [count, colors]);
+// Ultra-simplified Scene3D component with just a single static element
+const Scene3D = ({ colors = ['#FF00FF', '#9D00FF', '#00FFFF'] }: Scene3DProps) => {
+  const color = useMemo(() => colors[Math.floor(Math.random() * colors.length)], [colors]);
   
   return (
     <div className="w-full h-full">
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 75 }}
-        dpr={[1, 1.5]} // Reduce resolution for better performance
+        dpr={[0.5, 0.8]} // Very low resolution for better performance
         frameloop="demand" // Only render when needed
-        performance={{ min: 0.1 }} // Allow lower frame rates before taking measures
+        performance={{ min: 0.1 }} // Allow lower frame rates
       >
         <ambientLight intensity={0.3} />
-        {/* No directional light to save performance */}
         
-        {/* Render pre-calculated spheres */}
-        {sphereData.map((sphere, index) => (
-          <OptimizedSphere
-            key={index}
-            position={sphere.position}
-            color={sphere.color}
-            size={sphere.size}
-          />
-        ))}
+        {/* Just a single static sphere for absolute minimal performance impact */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[1.2, 8, 8]} /> {/* Lower polygon count */}
+          <meshBasicMaterial color={color} transparent opacity={0.5} />
+        </mesh>
         
-        <OrbitControls 
-          enableZoom={false} 
-          enablePan={false}
-          rotateSpeed={0.1}
-          enableDamping={false} // Disable physics for performance
-          autoRotate
-          autoRotateSpeed={0.1} // Slow rotation speed
-        />
+        {/* No OrbitControls or animations for maximum performance */}
       </Canvas>
     </div>
   );

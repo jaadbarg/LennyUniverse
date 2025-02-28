@@ -67,13 +67,12 @@ const AnimatedLogo = ({
     return null;
   }
   
+  // Simplified variants with reduced animation for performance
   const rotationVariants = {
     animate: {
-      rotate: rotationEnabled ? [0, 360] : 0,
+      rotate: 0, // No rotation for performance
       transition: {
-        duration: 20,
-        repeat: Infinity,
-        ease: "linear"
+        duration: 1
       }
     }
   };
@@ -81,11 +80,9 @@ const AnimatedLogo = ({
   const pulseVariants = {
     initial: { scale: 1 },
     animate: {
-      scale: pulseEnabled ? [1, 1.05, 1] : 1,
+      scale: 1, // No pulse for performance
       transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut"
+        duration: 1
       }
     }
   };
@@ -95,7 +92,7 @@ const AnimatedLogo = ({
       filter: `drop-shadow(0 0 5px ${glowColor}${Math.floor(glowIntensity * 50).toString(16)})` 
     },
     hover: { 
-      filter: `drop-shadow(0 0 10px ${glowColor}${Math.floor(glowIntensity * 70).toString(16)})` 
+      filter: `drop-shadow(0 0 5px ${glowColor}${Math.floor(glowIntensity * 50).toString(16)})` 
     }
   };
   

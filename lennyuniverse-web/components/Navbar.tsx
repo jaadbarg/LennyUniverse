@@ -73,24 +73,14 @@ export const Navbar = () => {
                 pulseEnabled={true}
                 hueRotateEnabled={false}
               />
-              <motion.span 
+              <span 
                 className="ml-3 text-xl font-bold hidden sm:block"
-                animate={{ 
-                  textShadow: [
-                    "0 0 5px #FF00FF, 0 0 10px #FF00FF",
-                    "0 0 10px #FF00FF, 0 0 15px #FF00FF",
-                    "0 0 5px #FF00FF, 0 0 10px #FF00FF"
-                  ]
-                }}
-                transition={{ 
-                  duration:
-                  4, 
-                  repeat: Infinity,
-                  ease: "easeInOut" 
+                style={{ 
+                  textShadow: "0 0 5px #FF00FF, 0 0 10px #FF00FF"
                 }}
               >
                 Lenny Universe
-              </motion.span>
+              </span>
             </Link>
           </div>
           

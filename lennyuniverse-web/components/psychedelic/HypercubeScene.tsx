@@ -34,31 +34,25 @@ interface HypercubeSceneProps {
   colors?: string[];
   spread?: number;
   speed?: number;
+  intensity?: number;
   minSize?: number;
   maxSize?: number;
-  intensity?: number;
   interactive?: boolean;
 }
 
-// Main scene component with performance optimizations
+// Ultra-simplified static scene for maximum performance
 const HypercubeScene = ({ 
-  count = 3, // Drastically reduced count
+  count = 1, // We're only using 1 cube, but keep param for backward compatibility
   colors = ['#FF00FF', '#9D00FF', '#00FFFF'], 
-  spread = 5, 
-  speed = 0.1, // Reduced speed
-  minSize = 1,
-  maxSize = 2,
-  intensity = 1,
-  interactive = false
+  spread = 5,
+  speed = 0.1, // Not used but kept for compatibility
+  intensity = 0.5,
+  minSize = 1, // Not used but kept for compatibility
+  maxSize = 2, // Not used but kept for compatibility
+  interactive = false // Not used but kept for compatibility
 }: HypercubeSceneProps) => {
-  // Pre-calculate cube positions instead of random generation during render
-  const cubePositions = useMemo(() => {
-    return Array.from({ length: count }).map(() => [
-      (Math.random() - 0.5) * spread,
-      (Math.random() - 0.5) * spread,
-      (Math.random() - 0.5) * spread
-    ] as [number, number, number]);
-  }, [count, spread]);
+  // Just get one random color
+  const color = useMemo(() => colors[Math.floor(Math.random() * colors.length)], [colors]);
   
   return (
     <Canvas
@@ -71,31 +65,18 @@ const HypercubeScene = ({
         left: 0,
         zIndex: 0,
       }}
-      dpr={[1, 1.5]} // Reduce resolution for better performance
+      dpr={[0.5, 0.8]} // Very low resolution for better performance
       frameloop="demand" // Only render when needed
-      performance={{ min: 0.1 }} // Allow frame rates to drop more before taking measures
+      performance={{ min: 0.1 }}
     >
-      <color attach="background" args={['#000000']} transparent opacity={0} />
+      <color attach="background" args={['#000000']} />
       <ambientLight intensity={0.2} />
       
-      {/* Render pre-calculated cubes */}
-      {cubePositions.map((position, index) => (
-        <OptimizedCube 
-          key={index}
-          position={position}
-          color={colors[index % colors.length]}
-          rotationSpeed={speed * (0.5 + Math.random() * 0.5)}
-        />
-      ))}
-      
-      <OrbitControls 
-        enableZoom={false} 
-        enablePan={false}
-        rotateSpeed={0.1}
-        autoRotate
-        autoRotateSpeed={0.1} // Slower rotation
-        enableDamping={false} // Disable physics for performance
-      />
+      {/* Just a single static cube for absolute minimal performance impact */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[1.5, 1.5, 1.5]} />
+        <meshBasicMaterial color={color} transparent opacity={intensity} />
+      </mesh>
     </Canvas>
   );
 };

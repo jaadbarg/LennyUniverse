@@ -101,11 +101,11 @@ export default function Home() {
           }}
         />
         
-        {/* Dynamic particles that follow mouse */}
+        {/* Static gradient instead of dynamic mouse-following particles */}
         <div 
           className="absolute inset-0 z-0"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 0, 255, 0.15), transparent 30%)`,
+            background: 'radial-gradient(circle at center, rgba(255, 0, 255, 0.15), transparent 50%)',
           }}
         />
         

@@ -32,31 +32,27 @@ const LoadingScreen = ({
   ];
 
   useEffect(() => {
-    // Simulate loading completion after min duration
+    // Simplified loading sequence with shorter duration
     const loadingTimer = setTimeout(() => {
-      const elapsedTime = Date.now() - loadingStartTime.current;
-      const remainingTime = Math.max(0, minDuration - elapsedTime);
+      // Skip particle explosion for performance
+      setParticlesExploded(false);
       
-      // Execute particle explosion animation
-      setParticlesExploded(true);
-      
-      // Sequence: logo grows, then everything fades out
+      // Simplified animation sequence
       logoControls.start({
-        scale: [1, 1.5, 2.5],
-        filter: ['drop-shadow(0 0 10px #FF00FF)', 'drop-shadow(0 0 30px #FF00FF)', 'drop-shadow(0 0 50px #FF00FF)'],
-        transition: { duration: 1.5, ease: "easeInOut" }
+        scale: 1.5,
+        filter: 'drop-shadow(0 0 20px #FF00FF)',
+        transition: { duration: 0.7, ease: "easeInOut" }
       }).then(() => {
-        setTimeout(() => {
-          controls.start({
-            opacity: 0,
-            transition: { duration: 0.5 }
-          }).then(() => {
-            setIsLoading(false);
-            if (onLoadingComplete) onLoadingComplete();
-          });
-        }, 500);
+        // Fade out immediately
+        controls.start({
+          opacity: 0,
+          transition: { duration: 0.3 }
+        }).then(() => {
+          setIsLoading(false);
+          if (onLoadingComplete) onLoadingComplete();
+        });
       });
-    }, minDuration);
+    }, Math.min(1500, minDuration)); // Maximum 1.5 seconds loading time
 
     return () => clearTimeout(loadingTimer);
   }, [onLoadingComplete, minDuration, controls, logoControls]);
@@ -128,32 +124,20 @@ const LoadingScreen = ({
               delay: 0.3
             }}
           >
-            {/* Radiating circles behind the logo */}
-            {Array.from({ length: 3 }).map((_, i) => (
-              <motion.div
-                key={`circle-${i}`}
-                className="absolute rounded-full"
-                style={{
-                  width: 200 + i * 50,
-                  height: 200 + i * 50,
-                  left: '50%',
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  backgroundColor: 'transparent',
-                  border: `1px solid ${i === 0 ? '#FF00FF' : i === 1 ? '#9D00FF' : '#00FFFF'}`,
-                  opacity: 0.3 - i * 0.1,
-                }}
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3 - i * 0.1, 0.5 - i * 0.1, 0.3 - i * 0.1],
-                }}
-                transition={{
-                  duration: 3 + i,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
+            {/* Glowing halo effect - simpler and more performant */}
+            <div 
+              className="absolute"
+              style={{
+                width: '300px',
+                height: '300px',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'radial-gradient(circle, rgba(255,0,255,0.3) 0%, rgba(157,0,255,0.2) 40%, rgba(0,255,255,0.1) 60%, transparent 80%)',
+                borderRadius: '50%',
+                filter: 'blur(10px)',
+              }}
+            />
 
             {/* Main logo that will expand */}
             <motion.div
@@ -162,18 +146,55 @@ const LoadingScreen = ({
               className="relative z-20 flex justify-center items-center"
               style={{ width: '100%', height: '100%' }}
             >
-              <AnimatedLogo
-                src={logoSrc}
-                alt="Lenny Universe Logo"
-                width={150}
-                height={150}
-                className="bg-white rounded-full p-3"
-                glowColor="#FF00FF"
-                glowIntensity={1.5}
-                rotationEnabled={true}
-                pulseEnabled={true}
-                hueRotateEnabled={false}
-              />
+              <div className="relative">
+                {/* Light rays effect behind logo - using CSS animation class */}
+                <div 
+                  className="absolute ray-rotate"
+                  style={{
+                    width: '190px',
+                    height: '190px',
+                    left: '50%',
+                    top: '50%',
+                    background: 'conic-gradient(from 0deg, transparent 0deg, rgba(255,0,255,0.3) 10deg, transparent 20deg, transparent 30deg, rgba(157,0,255,0.3) 40deg, transparent 50deg, transparent 60deg, rgba(0,255,255,0.3) 70deg, transparent 80deg, transparent 170deg, rgba(255,0,255,0.3) 180deg, transparent 190deg, transparent 260deg, rgba(157,0,255,0.3) 270deg, transparent 280deg, transparent 350deg)',
+                    borderRadius: '50%',
+                    filter: 'blur(5px)',
+                    opacity: 0.7,
+                    zIndex: -1,
+                  }}
+                />
+                
+                {/* Logo with white background circle and shine effect */}
+                <div className="logo-shine rounded-full">
+                  <AnimatedLogo
+                    src={logoSrc}
+                    alt="Lenny Universe Logo"
+                    width={150}
+                    height={150}
+                    className="bg-white rounded-full p-3 relative z-10"
+                    glowColor="#FF00FF"
+                    glowIntensity={1.5}
+                    rotationEnabled={false}
+                    pulseEnabled={false}
+                    hueRotateEnabled={false}
+                  />
+                </div>
+                
+                {/* Inner glow */}
+                <div 
+                  className="absolute"
+                  style={{
+                    width: '170px',
+                    height: '170px',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    boxShadow: 'inset 0 0 30px rgba(255,0,255,0.4)',
+                    borderRadius: '50%',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                  }}
+                />
+              </div>
             </motion.div>
 
             {/* Explosion particles */}

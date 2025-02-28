@@ -7,6 +7,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
 
+// Low-performance mode detection
+const isLowPerformanceDevice = () => {
+  // Check for mobile devices
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    typeof navigator !== 'undefined' ? navigator.userAgent : ''
+  );
+  
+  // Just use mobile detection as a simple performance indicator
+  return isMobile;
+};
+
 interface PsychedelicLayoutProps {
   children: ReactNode;
   particlesEnabled?: boolean;
@@ -18,12 +29,19 @@ interface PsychedelicLayoutProps {
 
 const PsychedelicLayout = ({
   children,
-  particlesEnabled = true,
-  mouseTrailEnabled = true,
+  particlesEnabled = false, // Disabled by default for performance
+  mouseTrailEnabled = false, // Disabled by default for performance
   pageTransitionEnabled = true,
-  floatingElementsEnabled = true,
+  floatingElementsEnabled = false, // Disabled by default for performance
   nebulaEnabled = true,
 }: PsychedelicLayoutProps) => {
+  // Detect low-performance devices on the client side
+  const [isLowPerformance, setIsLowPerformance] = useState(false);
+  
+  useEffect(() => {
+    // Set low-performance mode on mount
+    setIsLowPerformance(isLowPerformanceDevice());
+  }, []);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [trailPositions, setTrailPositions] = useState<{ x: number; y: number; id: string }[]>([]);
   const [ripples, setRipples] = useState<{ x: number; y: number; size: number; color: string; id: string }[]>([]);
@@ -97,24 +115,24 @@ const PsychedelicLayout = ({
     <>
       <SVGFilters />
       
-      {/* Nebula Background */}
-      {nebulaEnabled && <NebulaBackground opacity={0.8} zIndex={-20} />}
+      {/* Nebula Background - show even in low performance mode, but without animation */}
+      {nebulaEnabled && <NebulaBackground opacity={0.8} zIndex={-20} animate={!isLowPerformance} />}
       
-      {/* Floating Elements */}
-      {floatingElementsEnabled && (
+      {/* Floating Elements - only show if not in low performance mode */}
+      {floatingElementsEnabled && !isLowPerformance && (
         <FloatingElements 
-          count={15} 
-          intensity={0.7} 
+          count={6} // Reduced count
+          intensity={0.5} // Reduced intensity
           minSize={20} 
-          maxSize={70}
+          maxSize={50} // Smaller max size
         />
       )}
       
-      {/* Particles Background */}
-      {particlesEnabled && <ParticleBackground />}
+      {/* Particles Background - only show if not in low performance mode */}
+      {particlesEnabled && !isLowPerformance && <ParticleBackground />}
       
-      {/* Mouse Trail */}
-      {mouseTrailEnabled && (
+      {/* Mouse Trail - only show if not in low performance mode */}
+      {mouseTrailEnabled && !isLowPerformance && (
         <div className="fixed inset-0 pointer-events-none z-[1]">
           {trailPositions.map((point, index) => (
             <motion.div
@@ -175,34 +193,38 @@ const PsychedelicLayout = ({
         ))}
       </div>
       
-      {/* Dynamic light cursor effect */}
-      <div 
-        className="fixed pointer-events-none opacity-20 mix-blend-screen z-[2]"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, 
-                       rgba(255, 0, 255, 0.2), 
-                       rgba(157, 0, 255, 0.15) 30%, 
-                       rgba(0, 255, 255, 0.1) 50%, 
-                       transparent 70%)`,
-          width: '100vw',
-          height: '100vh',
-          top: 0,
-          left: 0,
-        }}
-      />
+      {/* Dynamic light cursor effect - only show if not in low performance mode */}
+      {!isLowPerformance && (
+        <div 
+          className="fixed pointer-events-none opacity-10 mix-blend-screen z-[2]"
+          style={{
+            background: 'radial-gradient(600px circle at center, rgba(255, 0, 255, 0.2), rgba(157, 0, 255, 0.15) 30%, rgba(0, 255, 255, 0.1) 50%, transparent 70%)',
+            width: '100vw',
+            height: '100vh',
+            top: 0,
+            left: 0,
+          }}
+        />
+      )}
       
-      {/* Page Content with Transitions */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={router.route}
-          initial={pageTransitionEnabled ? "initial" : undefined}
-          animate={pageTransitionEnabled ? "animate" : undefined}
-          exit={pageTransitionEnabled ? "exit" : undefined}
-          variants={pageVariants}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
+      {/* Page Content with Transitions - simplified for low performance devices */}
+      {isLowPerformance ? (
+        // No animations for low performance devices
+        <div className="relative">{children}</div>
+      ) : (
+        // Animations for higher performance devices
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={router.route}
+            initial={pageTransitionEnabled ? "initial" : undefined}
+            animate={pageTransitionEnabled ? "animate" : undefined}
+            exit={pageTransitionEnabled ? "exit" : undefined}
+            variants={pageVariants}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      )}
     </>
   );
 };
