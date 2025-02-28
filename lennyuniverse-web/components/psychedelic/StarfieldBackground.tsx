@@ -97,42 +97,26 @@ const StarfieldBackground = memo(({
         background: 'radial-gradient(circle at 30% 20%, rgba(50,0,60,0.15) 0%, transparent 40%),radial-gradient(circle at 70% 60%, rgba(157,0,255,0.1) 0%, transparent 30%)' 
       }} />
       
-      {/* Render static stars with CSS animations */}
-      {/* Render stars with aggressive batching - stars with similar animations grouped together */}
-      {[0, 1, 2].map(batch => (
-        <div key={`batch-${batch}`} className={`absolute inset-0 batch-${batch}`}>
-          {stars
-            .filter((_, i) => {
-              // On mobile, render even fewer stars for performance
-              const isMobile = typeof window !== 'undefined' && 
-                (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                window.innerWidth < 768);
-                
-              // On mobile, only render 1/5 of stars (batch 0 only gets rendered)
-              return isMobile ? (batch === 0 && i % 5 === 0) : (i % 3 === batch);
-            }) // Split into batches to reduce paint operations
-            .map((star, i) => (
-              <div
-                key={i}
-                className="absolute rounded-full twinkle-star"
-                style={{
-                  left: `${star.x}%`,
-                  top: `${star.y}%`,
-                  width: `${star.size}px`,
-                  height: `${star.size}px`,
-                  backgroundColor: star.color,
-                  boxShadow: star.size > 2 ? `0 0 ${star.size}px ${star.color}` : 'none', // Only larger stars get glow
-                  filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
-                  opacity: 0.9,
-                  animationDelay: `${star.delay}s`,
-                  animationDuration: `${star.duration}s`,
-                  '--twinkle-min': batch === 0 ? '0.6' : '0.5', // Different batch, different animation
-                  '--twinkle-max': batch === 0 ? '1' : '0.9',
-                } as React.CSSProperties}
-              />
-          ))}
-        </div>
-      ))}
+      {/* Simple static stars for guaranteed rendering */}
+      <div className="absolute inset-0">
+        {stars.map((star, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full twinkle-star"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              backgroundColor: star.color,
+              boxShadow: star.size > 2 ? `0 0 ${star.size}px ${star.color}` : 'none',
+              filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
+              opacity: 0.9,
+              animation: `twinkle ${star.duration}s ease-in-out infinite ${star.delay}s`,
+            }}
+          />
+        ))}
+      </div>
       
       {/* Enhanced nebula effects */}
       {withNebulas && nebulas.map((nebula, i) => (

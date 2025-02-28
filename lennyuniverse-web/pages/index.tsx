@@ -271,16 +271,7 @@ export default function Home() {
                       }}></div>
                     </div>
                     
-                    {/* Enhanced cosmic text below logo */}
-                    <div className="absolute -bottom-2 left-0 right-0 text-center">
-                      <SpaceText 
-                        text="LENNY" 
-                        size="2xl"
-                        glowColor="var(--psychedelic-magenta)"
-                        animated={true}
-                        variant="cosmic"
-                      />
-                    </div>
+                    {/* Removed LENNY text as requested */}
                   </div>
                 </div>
               </div>
