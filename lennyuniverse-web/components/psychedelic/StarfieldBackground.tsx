@@ -89,8 +89,8 @@ const StarfieldBackground = memo(({
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       style={{ 
         opacity, 
-        zIndex: 0, 
-        background: 'radial-gradient(ellipse at center, rgba(10,0,30,1) 0%, rgba(0,0,10,1) 100%)' 
+        zIndex: 3, 
+        background: 'radial-gradient(ellipse at center, rgba(10,0,30,0.8) 0%, rgba(0,0,10,0.8) 100%)' 
       }}
     >
       {/* Background gradients */}

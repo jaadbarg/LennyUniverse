@@ -123,15 +123,16 @@ export default function Home() {
       />
       
       {/* Unified Cosmic Background for entire page */}
-      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -20 }}>
+      <div className="fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
         <div className="absolute inset-0" style={{ 
-          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)'
+          background: 'linear-gradient(135deg, var(--deep-space) 0%, var(--cosmic-gray) 80%, var(--deep-space) 100%)',
+          zIndex: 1
         }}/>
         
         {/* Global starfield that moves with scroll */}
         <motion.div 
           className="absolute inset-0" 
-          style={{ zIndex: 1 }}
+          style={{ zIndex: 2 }}
           animate={{ 
             x: scrollOffset.x,
             y: scrollOffset.y 
@@ -336,7 +337,7 @@ export default function Home() {
             translateY: "-50%",
             background: "linear-gradient(90deg, transparent, var(--psychedelic-purple), var(--psychedelic-teal), var(--psychedelic-purple), transparent)",
             filter: "blur(2px)",
-            zIndex: 7
+            zIndex: 17
           }}
         />
       </div>
@@ -523,7 +524,7 @@ export default function Home() {
             translateY: "-50%",
             background: "linear-gradient(90deg, transparent, var(--psychedelic-teal), var(--psychedelic-magenta), var(--psychedelic-teal), transparent)",
             filter: "blur(3px)",
-            zIndex: 7
+            zIndex: 17
           }}
         />
       </div>
@@ -665,7 +666,7 @@ export default function Home() {
             background: "linear-gradient(90deg, transparent, var(--psychedelic-indigo), var(--psychedelic-gold), var(--psychedelic-indigo), transparent)",
             filter: "blur(4px)",
             boxShadow: "0 0 20px rgba(226, 51, 255, 0.3)",
-            zIndex: 7
+            zIndex: 17
           }}
         />
       </div>
