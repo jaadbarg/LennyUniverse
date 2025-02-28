@@ -15,57 +15,59 @@ const StarfieldBackground = memo(({
   className = '',
   withNebulas = false
 }: StarfieldBackgroundProps) => {
-  // Precompute all stars at render time - increased brightness and presence
-  const stars = Array.from({ length: Math.min(starCount, 250) }).map((_, i) => {
+  // Reduced number of stars for better performance but maintain visual appearance
+  const stars = Array.from({ length: Math.min(starCount, 120) }).map((_, i) => {
     // Static positioning
     const x = Math.random() * 100;
     const y = Math.random() * 100;
     
-    // Enhanced visual properties - larger, brighter stars
+    // Simplified visual properties with fewer variations
     const sizeFactor = Math.random();
-    const size = sizeFactor < 0.7 ? (1 + Math.random() * 2) : (2.5 + Math.random() * 3); // More large stars
+    // Limit star sizes for performance - fewer pixels to render
+    const size = sizeFactor < 0.8 ? (1 + Math.random() * 1.5) : (2 + Math.random() * 2); 
     
-    // Some stars get glow effect
-    const blurAmount = sizeFactor > 0.6 ? `${1 + Math.random() * 3}px` : '0';
+    // Very selective blur for performance - blur is expensive
+    const blurAmount = sizeFactor > 0.85 ? `${1 + Math.random() * 2}px` : '0';
     
-    // Animation properties - more varied twinkle patterns
-    const delay = Math.random() * 5;
-    const duration = 1.5 + Math.random() * 3; // Faster twinkling
+    // Animation properties - reduced animation complexity
+    // Fixed durations for grouped stars to reduce unique animation calculations
+    const groupIndex = Math.floor(i / 20); // Group stars to share timings
+    const delay = (groupIndex * 0.8 + Math.random() * 1.5) % 5;
+    const duration = 2 + (i % 3) * 1.2; // Only 3 different durations
     
-    // Enhanced color variety - more vibrant colors
-    const colorIndex = Math.random();
-    let color;
-    if (colorIndex > 0.92) color = '#FF9DFF'; // Bright pink
-    else if (colorIndex > 0.84) color = '#9DDDFF'; // Bright blue
-    else if (colorIndex > 0.76) color = '#FFFF9D'; // Slight yellow
-    else if (colorIndex > 0.68) color = '#FFDDFF'; // Slight pink
-    else color = '#FFFFFF'; // White
+    // Simpler colors - fewer unique values for better performance
+    const colorIndex = Math.floor(Math.random() * 5);
+    const colorPalette = ['#FFFFFF', '#FFFFFF', '#FFDDFF', '#9DDDFF', '#FFFF9D'];
+    const color = colorPalette[colorIndex];
     
-    // Make some stars (especially larger ones) extra bright
-    const brightness = sizeFactor > 0.7 ? 1.5 : 1;
-    
-    return { x, y, size, color, delay, duration, blurAmount, brightness };
+    return { x, y, size, color, delay, duration, blurAmount };
   });
   
-  // Create enhanced, more vibrant nebulas if requested
-  const nebulas = withNebulas ? Array.from({ length: 5 }).map((_, i) => {
-    const x = 15 + Math.random() * 70; // Keep away from edges
-    const y = 15 + Math.random() * 70;
-    const size = 30 + Math.random() * 40; // Larger nebulas
+  // Reduced number of nebulas and simplified for better performance
+  const nebulas = withNebulas ? Array.from({ length: 3 }).map((_, i) => {
+    // Fixed positions for more controlled performance
+    const positions = [
+      { x: 25, y: 30 },
+      { x: 70, y: 20 },
+      { x: 50, y: 70 }
+    ];
+    const { x, y } = positions[i];
     
-    // Choose nebula color with more vibrant options
+    // Fixed sizes for better performance prediction
+    const sizes = [35, 45, 40];
+    const size = sizes[i];
+    
+    // Simplified color options - fewer unique values for performance
     const colorSchemes = [
       { main: 'rgba(255,0,255,0.12)', glow: 'rgba(255,0,255,0.06)', outer: 'rgba(255,0,255,0.02)' }, // Magenta
       { main: 'rgba(157,0,255,0.12)', glow: 'rgba(157,0,255,0.06)', outer: 'rgba(157,0,255,0.02)' }, // Purple
       { main: 'rgba(0,255,255,0.12)', glow: 'rgba(0,255,255,0.06)', outer: 'rgba(0,255,255,0.02)' }, // Teal
-      { main: 'rgba(255,50,150,0.12)', glow: 'rgba(255,50,150,0.06)', outer: 'rgba(255,50,150,0.02)' }, // Pink-Red
-      { main: 'rgba(100,0,255,0.12)', glow: 'rgba(100,0,255,0.06)', outer: 'rgba(100,0,255,0.02)' }, // Indigo
     ];
-    const colorScheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
+    const colorScheme = colorSchemes[i];
     
-    // Add animation cycle variation for more dynamic appearance
-    const animationDelay = i * 3;
-    const animationDuration = 10 + Math.random() * 15;
+    // Fixed animation timings for consistent performance
+    const animationDelay = i * 4;
+    const animationDuration = 12 + i * 4; // Less randomness
     
     return { 
       x, y, size, 
@@ -90,26 +92,32 @@ const StarfieldBackground = memo(({
       }} />
       
       {/* Render static stars with CSS animations */}
-      {stars.map((star, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full twinkle-star"
-          style={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            backgroundColor: star.color,
-            boxShadow: `0 0 ${star.size * 2}px ${star.color}`,
-            filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
-            opacity: 0.9, // Higher base opacity
-            animationDelay: `${star.delay}s`,
-            animationDuration: `${star.duration}s`,
-            // Add CSS variable for animation intensity
-            '--twinkle-min': '0.6',
-            '--twinkle-max': '1',
-          } as React.CSSProperties}
-        />
+      {/* Render stars with aggressive batching - stars with similar animations grouped together */}
+      {[0, 1, 2].map(batch => (
+        <div key={`batch-${batch}`} className={`absolute inset-0 batch-${batch}`}>
+          {stars
+            .filter((_, i) => i % 3 === batch) // Split into 3 batches to reduce paint operations
+            .map((star, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full twinkle-star"
+                style={{
+                  left: `${star.x}%`,
+                  top: `${star.y}%`,
+                  width: `${star.size}px`,
+                  height: `${star.size}px`,
+                  backgroundColor: star.color,
+                  boxShadow: star.size > 2 ? `0 0 ${star.size}px ${star.color}` : 'none', // Only larger stars get glow
+                  filter: star.blurAmount ? `blur(${star.blurAmount})` : 'none',
+                  opacity: 0.9,
+                  animationDelay: `${star.delay}s`,
+                  animationDuration: `${star.duration}s`,
+                  '--twinkle-min': batch === 0 ? '0.6' : '0.5', // Different batch, different animation
+                  '--twinkle-max': batch === 0 ? '1' : '0.9',
+                } as React.CSSProperties}
+              />
+          ))}
+        </div>
       ))}
       
       {/* Enhanced nebula effects */}

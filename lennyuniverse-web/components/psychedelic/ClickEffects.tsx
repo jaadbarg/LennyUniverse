@@ -77,9 +77,27 @@ const ClickEffects = memo(({
   useEffect(() => {
     if (!enabled) return;
 
+    // Throttle click handlers for performance
+    let throttled = false;
+    const throttleTime = 300; // ms between allowed click effects
+    
     const handleClick = (e: MouseEvent) => {
-      // Limit number of simultaneous effects
-      if (effects.length >= maxEffects) return;
+      // Skip if throttled or too many effects already
+      if (throttled || effects.length >= maxEffects) return;
+      
+      // Check device capability - skip on mobile or low-end devices
+      if (typeof window !== 'undefined') {
+        const isMobile = window.innerWidth < 768;
+        const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+        if (isMobile || isLowEnd) {
+          // On low-end devices, only show effects occasionally
+          if (Math.random() < 0.7) return;
+        }
+      }
+      
+      // Throttle for performance
+      throttled = true;
+      setTimeout(() => { throttled = false; }, throttleTime);
       
       // Get click position
       const x = e.clientX;
@@ -88,10 +106,16 @@ const ClickEffects = memo(({
       // Generate effect ID
       const effectId = Date.now();
       
-      // Randomly select effect type (explosion or ripple)
-      const type = Math.random() > 0.5 ? 'explosion' : 'ripple';
+      // Alternate between ripple and explosion for variety
+      // Use ripples more often (70%) as they're less resource intensive
+      const isLowEnd = typeof window !== 'undefined' && 
+                      ((navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) ||
+                       window.innerWidth < 768);
+                       
+      // On low-end devices, only use ripple effects
+      const type = isLowEnd ? 'ripple' : (Math.random() > 0.7 ? 'explosion' : 'ripple');
       
-      // Randomly select color
+      // Use a color from our palette
       const color = colors[Math.floor(Math.random() * colors.length)];
       
       // Add this effect to state
@@ -110,10 +134,21 @@ const ClickEffects = memo(({
   return (
     <>
       {effects.map(effect => {
-        // Create a new explosion element when needed
+        // Fixed explosion type - position is passed correctly
         if (effect.type === 'explosion') {
           return (
-            <div key={effect.id} style={{ position: 'fixed', zIndex: 100, pointerEvents: 'none' }}>
+            <div 
+              key={effect.id} 
+              style={{ 
+                position: 'fixed', 
+                left: effect.x + 'px',  // Use the click coordinates
+                top: effect.y + 'px',
+                width: 0,
+                height: 0, 
+                zIndex: 100, 
+                pointerEvents: 'none' 
+              }}
+            >
               <ClickExplosion 
                 enabled={false} // We manage the effects internally
                 particleCount={15}

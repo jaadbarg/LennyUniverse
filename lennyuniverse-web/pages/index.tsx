@@ -89,7 +89,7 @@ export default function Home() {
     <div className="relative">
       <SVGFilters />
       
-      {/* Mathematical psychedelic click effects */}
+      {/* Mathematical psychedelic click effects - improved positioning */}
       <ClickEffects 
         enabled={true}
         maxEffects={3}
@@ -108,18 +108,18 @@ export default function Home() {
           }}
         />
         
-        {/* Enhanced starfield background with more stars */}
+        {/* Optimized starfield with fewer stars for better performance */}
         <StarfieldBackground
-          starCount={250}
+          starCount={90}
           opacity={1}
           withNebulas={true}
         />
         
-        {/* Enhanced nebula explosions - more frequent and dramatic */}
+        {/* Reduced nebula explosions for better performance */}
         <NebulaExplosion 
-          count={3}
-          interval={8000}
-          maxActive={2}
+          count={1}
+          interval={12000}
+          maxActive={1}
           zIndex={-5}
         />
         
@@ -227,22 +227,19 @@ export default function Home() {
                     <div className="absolute z-5 w-[350px] h-[350px] rounded-full">
                       {/* Outer glow ring */}
                       <div
-                        className="absolute inset-0 rounded-full"
+                        className="absolute inset-0 rounded-full saturn-outer-ring"
                         style={{
                           background: 'conic-gradient(from 0deg, #FF00FF20, #9D00FF30, #00FFFF30, #FF00FF20)',
-                          transform: 'rotate(30deg) scale(1.15, 0.2)',
                           filter: 'blur(10px)',
-                          opacity: 0.8,
-                          animation: 'saturnRingPulse 10s linear infinite'
+                          opacity: 0.8
                         }}
                       />
                       
                       {/* Inner rings */}
                       <div 
-                        className="absolute inset-0 rounded-full saturn-rings"
+                        className="absolute inset-0 rounded-full saturn-inner-ring"
                         style={{
-                          background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF08 3px, #FFFFFF08 4px), linear-gradient(135deg, #FF00FF30, #9D00FF50, #00FFFF30)',
-                          transform: 'rotate(30deg) scale(1.15, 0.18)',
+                          background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF10 3px, #FFFFFF08 4px), linear-gradient(135deg, #FF00FF30, #9D00FF50, #00FFFF30)',
                           boxShadow: '0 0 20px 2px rgba(255, 0, 255, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.3)'
                         }}
                       />

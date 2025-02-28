@@ -81,8 +81,25 @@ const FractalRipple = memo(({
         width: 0,
         height: 0,
         pointerEvents: 'none',
+        zIndex: 9999, // Ensure it's visible above other content
       }}
     >
+      {/* Add a quick flash effect for immediate visual feedback */}
+      <div
+        className="flash-effect"
+        style={{
+          position: 'absolute',
+          left: -50,
+          top: -50,
+          width: 100,
+          height: 100,
+          borderRadius: '50%',
+          backgroundColor: 'transparent',
+          boxShadow: `0 0 30px ${color}`,
+          opacity: 0,
+          animation: 'flashEffect 0.7s ease-out forwards'
+        }}
+      />
       {ripples}
     </div>
   );

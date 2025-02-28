@@ -56,16 +56,22 @@ const NebulaExplosion = memo(({
     }, duration * 1000);
   }, [explosions.length, maxActive]);
   
-  // Setup interval for occasional explosions
+  // Throttled explosions for performance optimization
   useEffect(() => {
+    // Only create explosions occasionally with more predictable timing
+    // Fixed interval with no randomness for more stable performance 
     const timer = setInterval(() => {
-      if (Math.random() > 0.3) { // Only 70% chance to create explosion
+      // Only if we have capacity and not on low-end devices
+      if (explosions.length < maxActive && 
+          // Performance detection - skip on slower devices
+          typeof window !== 'undefined' && 
+          window.innerWidth > 768) {
         createExplosion();
       }
-    }, interval);
+    }, interval + 2000); // Longer interval for better performance
     
     return () => clearInterval(timer);
-  }, [createExplosion, interval]);
+  }, [createExplosion, interval, explosions.length, maxActive]);
   
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex }}>
@@ -89,13 +95,18 @@ const NebulaExplosion = memo(({
         />
       ))}
       
-      {/* Add a few random shooting stars */}
-      {Array.from({ length: count }).map((_, i) => {
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const duration = 4 + Math.random() * 6;
-        const delay = Math.random() * 15;
-        const rotation = Math.random() * 360;
+      {/* Optimized shooting stars - only 1-2 for performance */}
+      {typeof window !== 'undefined' && window.innerWidth > 768 && Array.from({ length: Math.min(count, 2) }).map((_, i) => {
+        // Fixed positions for deterministic rendering
+        const positions = [
+          { x: 10, y: 20, rotation: 45 },
+          { x: 75, y: 15, rotation: 30 }
+        ];
+        const { x, y, rotation } = positions[i];
+        
+        // Fixed timing to reduce animation complexity
+        const duration = 5 + i * 3;
+        const delay = 7 + i * 12;
         
         return (
           <div 

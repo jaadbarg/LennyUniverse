@@ -270,8 +270,14 @@ h1, h2, h3, h4, .special-text {
   animation: rayRotate 20s linear infinite;
 }
 
-/* Enhanced Star twinkling animation with custom properties */
+/* Simplified twinkling animation for performance - reduced transform properties */
 @keyframes twinkle {
+  0%, 100% { opacity: var(--twinkle-min, 0.5); }
+  50% { opacity: var(--twinkle-max, 1); }
+}
+
+/* Only the first batch of stars gets transform animations for performance */
+@keyframes twinkle-with-scale {
   0%, 100% { opacity: var(--twinkle-min, 0.5); transform: scale(0.95); }
   50% { opacity: var(--twinkle-max, 1); transform: scale(1.05); }
 }
@@ -307,6 +313,12 @@ h1, h2, h3, h4, .special-text {
 
 .twinkle-star {
   animation: twinkle 3s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Apply scaling only to first batch for performance */
+div[class*="batch-0"] .twinkle-star {
+  animation: twinkle-with-scale 3s ease-in-out infinite;
   will-change: opacity, transform;
 }
 
@@ -364,6 +376,22 @@ h1, h2, h3, h4, .special-text {
   }
 }
 
+/* Flash effect for immediate visual feedback on click */
+@keyframes flashEffect {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  20% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
 /* Particle explosion animation */
 @keyframes explosionParticle {
   0% {
@@ -399,18 +427,33 @@ h1, h2, h3, h4, .special-text {
   }
 }
 
-/* Saturn rings rotation */
-@keyframes saturnRingsRotate {
+/* Saturn rings rotation - with different speeds for inner and outer rings */
+@keyframes saturnOuterRingRotate {
   0% {
-    transform: rotate(30deg) scale(1.15, 0.18);
+    transform: rotate(30deg) scale(1.15, 0.2);
   }
   100% {
-    transform: rotate(390deg) scale(1.15, 0.18);
+    transform: rotate(390deg) scale(1.15, 0.2);
   }
 }
 
-.saturn-rings {
-  animation: saturnRingsRotate 60s linear infinite;
+@keyframes saturnInnerRingRotate {
+  0% {
+    transform: rotate(45deg) scale(1.15, 0.18);
+  }
+  100% {
+    transform: rotate(-315deg) scale(1.15, 0.18);
+  }
+}
+
+.saturn-outer-ring {
+  animation: saturnOuterRingRotate 80s linear infinite, saturnRingPulse 10s linear infinite;
+  transform: rotate(30deg) scale(1.15, 0.2);
+}
+
+.saturn-inner-ring {
+  animation: saturnInnerRingRotate 60s linear infinite;
+  transform: rotate(45deg) scale(1.15, 0.18);
 }
 
 .shooting-star {
