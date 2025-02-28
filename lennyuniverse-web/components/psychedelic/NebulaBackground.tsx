@@ -6,7 +6,7 @@ interface NebulaBackgroundProps {
   zIndex?: number;
 }
 
-// Ultra-optimized version with nebula.png background
+// Ultra-optimized version - no animations at all, just a static background
 const NebulaBackground = memo(({
   opacity = 0.8,
   animate = false, // Ignore animation flag
@@ -16,12 +16,7 @@ const NebulaBackground = memo(({
     <div
       className="absolute inset-0 overflow-hidden"
       style={{
-        backgroundImage: 'url("/nebula.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: 'rgba(10,0,20,1)',
-        backgroundBlendMode: 'screen',
+        background: 'radial-gradient(circle at center, rgba(30,0,40,1) 0%, rgba(10,0,20,1) 70%, rgba(0,0,10,1) 100%)',
         filter: 'brightness(0.7) contrast(1.2)',
         opacity,
         zIndex,

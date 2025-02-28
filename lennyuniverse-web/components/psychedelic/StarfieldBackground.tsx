@@ -88,19 +88,13 @@ const StarfieldBackground = memo(({
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       style={{ 
         opacity, 
-        zIndex: -1,
-        backgroundImage: 'url("/nebula.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundBlendMode: 'screen',
-        backgroundColor: 'rgba(10,0,30,1)'
+        zIndex: -1, 
+        background: 'radial-gradient(ellipse at center, rgba(10,0,30,1) 0%, rgba(0,0,10,1) 100%)' 
       }}
     >
       {/* Background gradients */}
       <div className="absolute inset-0" style={{ 
-        background: 'radial-gradient(circle at 30% 20%, rgba(50,0,60,0.15) 0%, transparent 40%),radial-gradient(circle at 70% 60%, rgba(157,0,255,0.1) 0%, transparent 30%)',
-        mixBlendMode: 'screen'
+        background: 'radial-gradient(circle at 30% 20%, rgba(50,0,60,0.15) 0%, transparent 40%),radial-gradient(circle at 70% 60%, rgba(157,0,255,0.1) 0%, transparent 30%)' 
       }} />
       
       {/* Render static stars with CSS animations */}
