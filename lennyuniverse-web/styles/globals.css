@@ -2,17 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import fonts for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
   --neon-pink: #FF00FF;
   --neon-purple: #9D00FF;
   --neon-teal: #00FFFF;
   --dark-bg: #0c0c0c;
+  --font-display: 'Audiowide', 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 body {
   background-color: var(--dark-bg);
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
+}
+
+/* Apply special font to headings and featured text */
+h1, h2, h3, h4, .special-text {
+  font-family: var(--font-display);
+}
+
+/* Enhanced style for the "blissful growth" special text */
+.blissful-text {
+  font-family: var(--font-display);
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
 }
 
 /* Basic Neon Effects */

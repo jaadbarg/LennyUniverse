@@ -157,22 +157,29 @@ export default function Home() {
                   
                   {/* Enhanced Container for Blissful Growth with Backdrop */}
                   <div className="relative flex flex-col items-center justify-center w-full mt-4 mb-6">
-                    {/* Background Aura for the 3D Text */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 via-pink-800/30 to-fuchsia-900/40 rounded-xl blur-lg transform scale-110 z-0"></div>
+                    {/* Enhanced multi-layered background for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-800/30 via-pink-700/20 to-fuchsia-800/30 rounded-xl blur-xl transform scale-105 z-0"></div>
+                    <div className="absolute inset-0 bg-black/40 rounded-xl backdrop-blur-sm z-1"></div>
                     
-                    {/* Larger and More Impressive 3D Text */}
+                    {/* Subtle animated glow border */}
+                    <div className="absolute inset-0 rounded-xl z-2 animate-pulse-slow">
+                      <div className="absolute inset-0 rounded-xl border border-purple-500/30 blur-sm"></div>
+                    </div>
+                    
+                    {/* New optimized 3D Text with better performance and aesthetics */}
                     <NeonText3D 
                       text="blissful growth" 
-                      className="h-32 md:h-48 w-full mb-6 z-20"
+                      className="h-36 md:h-52 w-full mb-4 z-20 blissful-text"
                       color="#FF00FF" 
-                      floatIntensity={3}
-                      speed={1.2}
+                      floatIntensity={0.8}
+                      speed={0.7}
+                      size={1.5}
                     />
                     
-                    {/* Light Rays Effect */}
-                    <div className="absolute w-full h-full z-10 overflow-hidden opacity-70">
-                      <div className="absolute top-1/2 left-1/2 w-[140%] h-[140%] -translate-x-1/2 -translate-y-1/2 ray-rotate">
-                        <div className="w-full h-full bg-[conic-gradient(from_0deg,transparent,#FF00FF40_10deg,transparent_15deg,transparent_30deg,#9D00FF40_40deg,transparent_45deg)]"></div>
+                    {/* Refined Light Rays Effect with better performance */}
+                    <div className="absolute w-full h-full z-5 overflow-hidden opacity-50">
+                      <div className="absolute top-1/2 left-1/2 w-[120%] h-[120%] -translate-x-1/2 -translate-y-1/2 ray-rotate" style={{ animationDuration: '25s' }}>
+                        <div className="w-full h-full bg-[conic-gradient(from_0deg,transparent,#FF00FF30_5deg,transparent_10deg,transparent_30deg,#9D00FF30_35deg,transparent_40deg)]"></div>
                       </div>
                     </div>
                   </div>
