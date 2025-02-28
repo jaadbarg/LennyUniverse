@@ -102,13 +102,13 @@ export default function Home() {
         
         {/* Content container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left column - Journey text */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            {/* Left column - Journey text - changes order on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="relative z-10"
+              className="relative z-10 order-2 lg:order-1"
             >
               {/* Simple cosmic title */}
               <div className="relative mb-10">
@@ -191,53 +191,99 @@ export default function Home() {
               </motion.div>
             </motion.div>
             
-            {/* Right column - LENNY logo */}
+            {/* Right column - LENNY logo - visible on all devices - first on mobile */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="relative hidden lg:block"
+              className="relative order-1 lg:order-2 mb-8 lg:mb-0"
             >
-              <div className="rounded-full overflow-visible max-w-lg mx-auto relative p-8">
-                {/* Static logo container with subtle animation - increased size */}
-                <div className="relative h-96 w-96 mx-auto rounded-full bg-gradient-to-b from-black to-purple-900/30 border border-purple-500/30 backdrop-blur-sm p-6">
+              <div className="rounded-full overflow-visible max-w-lg mx-auto relative p-4 md:p-8">
+                {/* Static logo container with subtle animation - responsive sizing */}
+                <div className="relative mx-auto rounded-full bg-gradient-to-b from-black to-purple-900/30 border border-purple-500/30 backdrop-blur-sm p-4 md:p-6"
+                  style={{ 
+                    height: 'clamp(260px, 70vw, 400px)',
+                    width: 'clamp(260px, 70vw, 400px)',
+                    maxWidth: '96vw'
+                  }}
+                >
                   {/* Ambient glow */}
                   <div className="absolute inset-0 rounded-full blur-xl bg-gradient-radial from-pink-600/20 via-purple-500/10 to-transparent"></div>
                   
-                  {/* Logo display with Saturn rings effect - conditionally rendered for mobile */}
+                  {/* Logo display with Saturn rings effect */}
                   <div className="relative h-full w-full flex items-center justify-center">
-                    {/* Saturn rings effect - hidden on mobile for performance - increased size with improved positioning */}
-                    <div className="absolute w-[450px] h-[450px] rounded-full hidden md:block" style={{left: '-75px', top: '-75px', zIndex: 1}}>
-                      {/* Outer glow ring */}
+                    {/* Saturn rings effect - dramatically larger on desktop */}
+                    <div className="absolute rounded-full hidden sm:block" 
+                      style={{
+                        width: 'calc(100% + clamp(120px, 40vw, 300px))',
+                        height: 'calc(100% + clamp(120px, 40vw, 300px))',
+                        left: 'calc(-1 * clamp(60px, 20vw, 150px))', 
+                        top: 'calc(-1 * clamp(60px, 20vw, 150px))', 
+                        zIndex: 1
+                      }}
+                    >
+                      {/* Outer glow ring - enhanced for desktop */}
                       <div
                         className="absolute inset-0 rounded-full saturn-outer-ring"
                         style={{
                           background: 'conic-gradient(from 0deg, #FF00FF30, #9D00FF40, #00FFFF40, #FF00FF30)',
-                          filter: 'blur(12px)',
+                          filter: 'blur(clamp(8px, 2vw, 15px))',
                           opacity: 0.9
                         }}
                       />
                       
-                      {/* Inner rings */}
+                      {/* Inner rings - enhanced for desktop */}
                       <div 
                         className="absolute inset-0 rounded-full saturn-inner-ring"
                         style={{
                           background: 'repeating-radial-gradient(circle, transparent, transparent 2px, #FFFFFF15 3px, #FFFFFF10 4px), linear-gradient(135deg, #FF00FF40, #9D00FF60, #00FFFF40)',
-                          boxShadow: '0 0 30px 4px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 0, 255, 0.4)'
+                          boxShadow: '0 0 35px 8px rgba(255, 0, 255, 0.6), inset 0 0 30px rgba(255, 0, 255, 0.4)'
                         }}
                       />
                     </div>
                     
-                    {/* Simple glow effect for mobile only */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-radial from-purple-500/20 to-transparent block md:hidden"></div>
+                    {/* Mobile-optimized rings */}
+                    <div className="absolute rounded-full sm:hidden" 
+                      style={{
+                        width: 'calc(100% + 60px)',
+                        height: 'calc(100% + 60px)',
+                        left: '-30px', 
+                        top: '-30px', 
+                        zIndex: 1
+                      }}
+                    >
+                      {/* Outer glow ring - mobile optimized */}
+                      <div
+                        className="absolute inset-0 rounded-full saturn-outer-ring"
+                        style={{
+                          background: 'conic-gradient(from 0deg, #FF00FF30, #9D00FF40, #00FFFF40, #FF00FF30)',
+                          filter: 'blur(6px)',
+                          opacity: 0.8
+                        }}
+                      />
+                      
+                      {/* Inner rings - mobile optimized */}
+                      <div 
+                        className="absolute inset-0 rounded-full saturn-inner-ring"
+                        style={{
+                          background: 'repeating-radial-gradient(circle, transparent, transparent 1px, #FFFFFF15 2px, #FFFFFF10 3px), linear-gradient(135deg, #FF00FF40, #9D00FF60, #00FFFF40)',
+                          boxShadow: '0 0 15px 4px rgba(255, 0, 255, 0.5), inset 0 0 10px rgba(255, 0, 255, 0.3)'
+                        }}
+                      />
+                    </div>
                     
-                    {/* Logo with white background and enhanced shine effect - size increased */}
-                    <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg" style={{width: '240px', height: '240px'}}>
+                    {/* Logo with white background and enhanced shine effect - responsive size */}
+                    <div className="logo-shine rounded-full p-2 bg-gradient-to-b from-white via-white to-purple-50 z-10 relative shadow-lg" 
+                      style={{
+                        width: 'calc(100% - 20px)',
+                        height: 'calc(100% - 20px)'
+                      }}
+                    >
                       <img 
                         src="https://i0.wp.com/lennyuniverse.com/wp-content/uploads/2023/11/LU-Logo_Black.png?fit=1080%2C901&ssl=1"
                         alt="Lenny Universe Logo"
-                        className="relative z-10"
-                        style={{ width: "auto", height: "auto", maxWidth: "240px", maxHeight: "240px" }}
+                        className="relative z-10 w-full h-full object-contain"
+                        style={{ padding: '10px' }}
                         loading="eager"
                       />
                       
@@ -248,6 +294,28 @@ export default function Home() {
                       }}></div>
                     </div>
                   </div>
+                  
+                  {/* Pulsing animation effect - enhanced for desktop */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    animate={{
+                      boxShadow: [
+                        "0 0 30px 8px rgba(255, 0, 255, 0.4), 0 0 50px 20px rgba(157, 0, 255, 0.2)",
+                        "0 0 40px 15px rgba(255, 0, 255, 0.5), 0 0 70px 30px rgba(157, 0, 255, 0.3)",
+                        "0 0 30px 8px rgba(255, 0, 255, 0.4), 0 0 50px 20px rgba(157, 0, 255, 0.2)"
+                      ],
+                      filter: [
+                        "blur(2px)",
+                        "blur(4px)",
+                        "blur(2px)"
+                      ]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      repeatType: "reverse"
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>
